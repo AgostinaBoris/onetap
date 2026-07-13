@@ -1,0 +1,1 @@
+OneTap Vercel-ready build. Fix included: hamburger menu Help now has an onClick handler and opens a Help screen. Upload the folder contents to Vercel with Framework Preset: Other, Build Command empty, Output Directory ./

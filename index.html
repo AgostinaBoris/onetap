@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>OneTap</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/duotone/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/fill/style.css">
+<link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/bold/style.css">
+<style>
+  * { box-sizing: border-box; -webkit-font-smoothing: antialiased; }
+  body { margin: 0; }
+  ::-webkit-scrollbar { width: 0; height: 0; }
+  .otscroll { scrollbar-width: none; }
+  @keyframes screenIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes floatGlow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+  @keyframes checkPop { 0% { transform: scale(0); } 60% { transform: scale(1.14); } 100% { transform: scale(1); } }
+  @keyframes glowPulse { 0%,100% { opacity:.5; } 50% { opacity:.9; } }
+  @keyframes logoIn { 0% { opacity:0; transform:scale(.82) translateY(14px);} 100% { opacity:1; transform:scale(1) translateY(0);} }
+  @keyframes floatSoft { 0%,100% { transform:translateY(0);} 50% { transform:translateY(-6px);} }
+  @keyframes glowBreath { 0%,100% { opacity:.5; transform:scale(1);} 50% { opacity:1; transform:scale(1.1);} }
+  @keyframes shine { 0% { transform:rotate(18deg) translateX(-220%);} 55%,100% { transform:rotate(18deg) translateX(360%);} }
+  @keyframes ctaGlow { 0%,100% { box-shadow:0 14px 30px -6px rgba(37,99,235,.5);} 50% { box-shadow:0 18px 40px -6px rgba(37,99,235,.9);} }
+  @keyframes boltPulse { 0%,100% { filter:drop-shadow(0 0 8px rgba(120,200,255,.65)); } 50% { filter:drop-shadow(0 0 20px rgba(150,220,255,1)); } }
+  @keyframes borderGlow { 0%,100% { box-shadow:0 0 0 1px rgba(120,190,255,.35), 0 0 30px rgba(51,144,253,.4), 0 20px 50px -14px rgba(0,20,60,.8), inset 0 0 30px rgba(51,144,253,.22), inset 0 2px 10px rgba(150,200,255,.22); } 50% { box-shadow:0 0 0 1px rgba(150,210,255,.7), 0 0 54px rgba(70,160,255,.75), 0 20px 50px -14px rgba(0,20,60,.8), inset 0 0 40px rgba(51,144,253,.34), inset 0 2px 12px rgba(170,210,255,.32); } }
+  @keyframes cardIn { from { opacity:0; transform:translateY(14px) scale(.985);} to { opacity:1; transform:none;} }
+</style>
+</helmet>
+<div style="min-height:100vh;width:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;padding:48px 20px;background:radial-gradient(1200px 760px at 50% -8%, #0a0e15 0%, #05070b 46%, #010203 100%);font-family:'Instrument Sans',sans-serif;">
+
+  <div style="display:flex;align-items:center;gap:12px;">
+    <div style="width:34px;height:34px;border-radius:6px;background:linear-gradient(155deg,#6BB3FE,#2563EB);display:flex;align-items:center;justify-content:center;box-shadow:0 6px 20px rgba(51,144,253,.45);">
+      <i class="ph-fill ph-lightning" style="font-size:19px;color:#eaf3ff;"></i>
+    </div>
+    <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:19px;color:#F1F5F9;letter-spacing:-.02em;">OneTap</div>
+  </div>
+
+  <div style="width:100%;max-width:480px;aspect-ratio:402/858;border-radius:56px;padding:11px;background:linear-gradient(160deg,#10141d,#010203);box-shadow:0 40px 90px -20px rgba(0,0,0,.85), 0 0 0 1px rgba(51,144,253,.08), inset 0 0 0 1px rgba(255,255,255,.03);flex-shrink:0;margin:0 auto;">
+    <div style="position:relative;width:100%;height:100%;border-radius:46px;overflow:hidden;background:#040507;display:flex;flex-direction:column;">
+
+      <div style="position:absolute;top:0;left:0;right:0;height:52px;z-index:50;display:flex;align-items:flex-end;justify-content:space-between;padding:0 30px 6px;pointer-events:none;background:linear-gradient(180deg,rgba(4,5,7,.95),rgba(4,5,7,0));">
+        <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;letter-spacing:.02em;">9:41</div>
+        <div style="display:flex;align-items:center;gap:7px;color:#F1F5F9;">
+          <i class="ph-fill ph-cell-signal-full" style="font-size:16px;"></i>
+          <i class="ph-fill ph-wifi-high" style="font-size:16px;"></i>
+          <i class="ph-fill ph-battery-full" style="font-size:18px;"></i>
+        </div>
+      </div>
+
+      <div style="position:relative;flex:1;min-height:0;">
+
+        <sc-if value="{{ showOnboarding }}" hint-placeholder-val="{{ true }}">
+          <div data-screen-label="Onboarding" style="position:absolute;inset:0;animation:screenIn .4s ease;display:flex;flex-direction:column;padding:64px 32px 40px;background:radial-gradient(520px 440px at 50% 24%, rgba(51,144,253,.16), transparent 60%);">
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;">
+              <div style="position:relative;animation:logoIn .7s cubic-bezier(.2,.9,.3,1) both, floatSoft 5.5s ease-in-out .7s infinite;">
+                <div style="position:absolute;inset:-24px;border-radius:54px;background:radial-gradient(circle, rgba(51,144,253,.34), transparent 70%);filter:blur(22px);animation:glowBreath 4s ease-in-out infinite;"></div>
+                <div style="position:relative;width:140px;height:140px;border-radius:18px;overflow:hidden;display:flex;align-items:center;justify-content:center;background:radial-gradient(125% 120% at 50% 16%, #163a6e 0%, #0c1f3e 46%, #060e1f 100%);border:2px solid rgba(90,170,255,.8);animation:borderGlow 4s ease-in-out infinite;">
+                  <div style="position:absolute;top:-60%;left:-10%;width:52%;height:220%;background:linear-gradient(90deg,transparent,rgba(205,232,255,.6),transparent);transform:rotate(18deg);animation:shine 4.6s ease-in-out 1.2s infinite;pointer-events:none;"></div>
+                  <div style="position:absolute;inset:0;background:radial-gradient(58% 42% at 50% 44%, rgba(70,150,255,.38), transparent 72%);pointer-events:none;"></div><div style="position:absolute;top:0;left:0;right:0;height:54%;background:linear-gradient(180deg, rgba(165,208,255,.26), transparent);pointer-events:none;"></div><i class="ph-fill ph-lightning" style="position:absolute;font-size:84px;color:#04102a;transform:translate(3px,4px);opacity:.5;filter:blur(1px) saturate(1.5) brightness(1.2);"></i><i class="ph-fill ph-lightning" style="position:absolute;font-size:84px;color:#f2f9ff;transform:translate(-2.5px,-2.5px);opacity:.92;filter:saturate(1.8) brightness(1.3);"></i><i class="ph-fill ph-lightning" style="position:relative;font-size:84px;background:linear-gradient(150deg,#eef7ff 0%,#a9d2ff 26%,#5c9df6 54%,#2f6ae0 78%,#163a92 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent;animation:boltPulse 3s ease-in-out infinite;filter:saturate(1.8) brightness(1.2);"></i>
+                </div>
+              </div>
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:36px;line-height:1.02;color:#F1F5F9;letter-spacing:-.03em;margin-top:46px;">Your money,<br>one tap away.</div>
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:16px;line-height:1.5;color:#94A3B8;margin-top:16px;max-width:280px;">Track your income and expenses — simply, fast, and clear.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:12px;margin-top:-10px;margin-bottom:30px;">
+              <button onClick="{{ toHome }}" style="width:100%;height:58px;border:none;border-radius:16px;background:linear-gradient(150deg,#3390FD,#2563EB);color:#fff;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:17px;cursor:pointer;box-shadow:0 14px 30px -6px rgba(37,99,235,.6);transition:transform .18s,box-shadow .25s;animation:ctaGlow 3.4s ease-in-out infinite;" style-hover="transform:translateY(-2px);box-shadow:0 22px 46px -8px rgba(37,99,235,.95)" style-active="transform:scale(.97)">Get started</button>
+              <button onClick="{{ toLogin }}" style="width:100%;height:58px;border:1px solid rgba(241,245,249,.13);border-radius:16px;background:rgba(241,245,249,.04);color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:17px;cursor:pointer;transition:transform .15s,background .2s;" style-active="transform:scale(.97)" style-hover="background:rgba(241,245,249,.08)">I already have an account</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showLogin }}" hint-placeholder-val="{{ true }}">
+          <div data-screen-label="Login" style="position:absolute;inset:0;animation:screenIn .4s ease;display:flex;flex-direction:column;padding:70px 32px 40px;">
+            <button onClick="{{ toOnboarding }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.1);background:rgba(241,245,249,.04);color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0;"><i class="ph-bold ph-caret-left" style="font-size:20px;"></i></button>
+            <div style="margin-top:34px;">
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:34px;color:#F1F5F9;letter-spacing:-.03em;">Welcome back 👋</div>
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:16px;color:#94A3B8;margin-top:8px;">Sign in to keep managing your money.</div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:14px;margin-top:34px;">
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#94A3B8;padding-left:4px;">Email</div>
+                <div style="display:flex;align-items:center;gap:12px;height:56px;padding:0 18px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.08);">
+                  <i class="ph-duotone ph-envelope-simple" style="font-size:20px;color:#3390FD;"></i>
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:16px;color:#F1F5F9;">aldana@onetap.com</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:8px;">
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#94A3B8;padding-left:4px;">Password</div>
+                <div style="display:flex;align-items:center;gap:12px;height:56px;padding:0 18px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.08);">
+                  <i class="ph-duotone ph-lock-simple" style="font-size:20px;color:#3390FD;"></i>
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:20px;color:#F1F5F9;letter-spacing:.12em;">••••••••</div>
+                  <i class="ph-duotone ph-eye" style="font-size:20px;color:#5B6578;margin-left:auto;"></i>
+                </div>
+              </div>
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#3390FD;text-align:right;padding:2px 4px;">Forgot your password?</div>
+            </div>
+            <div style="flex:1;"></div>
+            <button onClick="{{ toHome }}" style="width:100%;height:58px;border:none;border-radius:16px;background:linear-gradient(150deg,#3390FD,#2563EB);color:#fff;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:17px;cursor:pointer;box-shadow:0 14px 30px -6px rgba(37,99,235,.6);transition:transform .18s,box-shadow .25s;animation:ctaGlow 3.4s ease-in-out infinite;" style-hover="transform:translateY(-2px);box-shadow:0 22px 46px -8px rgba(37,99,235,.95)" style-active="transform:scale(.97)">Sign in</button>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showHome }}" hint-placeholder-val="{{ true }}">
+          <div data-screen-label="Home" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
+            <div style="padding:60px 22px 118px;">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;">
+                <div style="display:flex;align-items:center;gap:12px;">
+                  <div style="width:100px;height:100px;border-radius:24px;background:linear-gradient(150deg,#3390FD,#2563EB);display:flex;align-items:center;justify-content:center;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:17px;color:#fff;overflow:hidden;flex-shrink:0;">
+                  <img src="./avatar-cropped.png" style="width:130%;height:130%;object-fit:cover;margin:0 auto;"/>
+                </div>
+                  <div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:13px;color:#94A3B8;">Welcome back,</div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:18px;color:#F1F5F9;letter-spacing:-.02em;">Agostina</div>
+                  </div>
+                </div>
+                <button onClick="{{ openMenu }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.08);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:transform .18s,background .2s;" style-hover="background:#141821;transform:translateY(-1px)" style-active="transform:scale(.92)"><i class="ph-bold ph-list" style="font-size:22px;"></i></button>
+                <sc-if value="{{ showMenu }}" hint-placeholder-val="{{ false }}">
+                  <div style="position:absolute;top:60px;right:0;z-index:100;width:260px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.08);box-shadow:0 12px 32px rgba(0,0,0,.6);animation:cardIn .25s ease;overflow:hidden;">
+                    <button onClick="{{ openCategorias }}" style="width:100%;padding:16px 18px;text-align:left;background:none;border:none;border-bottom:1px solid rgba(241,245,249,.06);color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;" style-hover="background:#141821;color:#3390FD">Categories</button>
+                    <button onClick="{{ goBalance }}" style="width:100%;padding:16px 18px;text-align:left;background:none;border:none;border-bottom:1px solid rgba(241,245,249,.06);color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;" style-hover="background:#141821;color:#3390FD">Spending by Category</button>
+                    <button onClick="{{ openSettings }}" style="width:100%;padding:16px 18px;text-align:left;background:none;border:none;border-bottom:1px solid rgba(241,245,249,.06);color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;" style-hover="background:#141821;color:#3390FD">Settings</button>
+                    <button onClick="{{ openHelp }}" style="width:100%;padding:16px 18px;text-align:left;background:none;border:none;border-bottom:1px solid rgba(241,245,249,.06);color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;" style-hover="background:#141821;color:#3390FD">Help</button>
+                    <button onClick="{{ logout }}" style="width:100%;padding:16px 18px;text-align:left;background:none;border:none;color:#F87171;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;" style-hover="background:#141821">Log out</button>
+                  </div>
+                </sc-if>
+              </div>
+
+              <div style="position:relative;border-radius:22px;padding:20px 22px 16px;background:linear-gradient(165deg,#0E1219,#080A0F);border:1px solid rgba(241,245,249,.08);overflow:hidden;box-shadow:0 18px 44px -22px rgba(0,0,0,.6);animation:cardIn .55s ease .04s backwards;">
+                <div style="position:absolute;top:-50px;right:-40px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(51,144,253,.09),transparent 74%);"></div>
+                <div style="position:relative;">
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:.09em;color:#94A3B8;">TOTAL BALANCE</div>
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:33px;line-height:1.05;color:#F5F7FB;letter-spacing:-.02em;margin-top:6px;">{{ totalBalanceText }}</div>
+                  <div style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:5px 11px;border-radius:999px;background:rgba(25,230,128,.14);">
+                    <i class="ph-fill ph-trend-up" style="font-size:14px;color:#19E680;"></i>
+                    <span style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:13px;color:#19E680;">+2.5% this month</span>
+                  </div>
+                  <div style="display:flex;gap:12px;margin-top:22px;">
+                    <button onClick="{{ openNuevoIncome }}" style="flex:1;height:46px;border:none;border-radius:14px;background:rgba(25,230,128,.14);border:1px solid rgba(25,230,128,.28);color:#19E680;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,filter .2s;" style-hover="filter:brightness(1.22)" style-active="transform:scale(.96)"><i class="ph-bold ph-plus" style="font-size:17px;"></i>Income</button>
+                    <button onClick="{{ openNuevoExpense }}" style="flex:1;height:46px;border:none;border-radius:14px;background:rgba(248,113,113,.14);border:1px solid rgba(248,113,113,.28);color:#F87171;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:transform .15s,filter .2s;" style-hover="filter:brightness(1.22)" style-active="transform:scale(.96)"><i class="ph-bold ph-minus" style="font-size:17px;"></i>Expense</button>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;margin:28px 2px 14px;">
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:18px;color:#F1F5F9;letter-spacing:-.02em;">Categories</div>
+                <button onClick="{{ openCategorias }}" style="background:none;border:none;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#3390FD;cursor:pointer;transition:filter .2s,transform .15s;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)">See all</button>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px;">
+                <sc-for list="{{ catChips }}" as="c" hint-placeholder-count="4">
+                  <button onClick="{{ c.onPress }}" style="{{ c.chipStyle }}" style-hover="transform:translateY(-3px);border-color:rgba(51,144,253,.4);background:#12161d" style-active="transform:scale(.94)">
+                    <div style="{{ c.iconWrap }}"><i class="ph-duotone ph-{{ c.icon }}" style="font-size:20px;"></i></div>
+                    <span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:11px;color:#94A3B8;text-align:center;line-height:1.2;">{{ c.label }}</span>
+                  </button>
+                </sc-for>
+              </div>
+
+              <div style="display:flex;align-items:center;justify-content:space-between;margin:28px 2px 14px;">
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:18px;color:#F1F5F9;letter-spacing:-.02em;">Recent activity</div>
+                <button onClick="{{ goMov }}" style="background:none;border:none;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#3390FD;cursor:pointer;transition:filter .2s,transform .15s;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)">See all</button>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px;">
+                <sc-for list="{{ recentTx }}" as="t" hint-placeholder-count="5">
+                  <div style="{{ t.rowStyle }}" style-hover="background:#101319;transform:translateX(3px)">
+                    <div style="{{ t.iconWrap }}"><i class="ph-duotone ph-{{ t.icon }}" style="font-size:21px;"></i></div>
+                    <div style="flex:1;min-width:0;">
+                      <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.name }}</div>
+                      <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:12.5px;color:#5B6578;margin-top:2px;">{{ t.sub }}</div>
+                    </div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:16px;color:{{ t.amountColor }};">{{ t.amountText }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showBalance }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Balance" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
+            <div style="padding:60px 22px 118px;">
+              <div style="text-align:center;">
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:.09em;color:#94A3B8;">NET BALANCE</div>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:33px;color:#F5F7FB;letter-spacing:-.02em;margin-top:6px;">{{ balNetoText }}</div>
+                <div style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 12px;border-radius:999px;background:rgba(25,230,128,.12);">
+                  <i class="ph-fill ph-trend-up" style="font-size:13px;color:#19E680;"></i>
+                  <span style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:13px;color:#19E680;">Saved {{ balAhorroText }} this month</span>
+                </div>
+              </div>
+              <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin:22px 0;">
+                <button onClick="{{ prevMonth }}" style="width:34px;height:34px;border-radius:10px;border:1px solid rgba(241,245,249,.08);background:#0C0E12;color:#94A3B8;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="ph-bold ph-caret-left"></i></button>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;letter-spacing:.05em;color:#F1F5F9;min-width:132px;text-align:center;">{{ monthLabel }}</div>
+                <button onClick="{{ nextMonth }}" style="width:34px;height:34px;border-radius:10px;border:1px solid rgba(241,245,249,.08);background:#0C0E12;color:#94A3B8;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="ph-bold ph-caret-right"></i></button>
+              </div>
+              <div style="display:flex;gap:12px;">
+                <div style="flex:1;border-radius:16px;padding:16px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;">
+                  <div style="display:flex;align-items:center;gap:7px;"><i class="ph-fill ph-arrow-down-left" style="font-size:15px;color:#19E680;"></i><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#94A3B8;">Income</span></div>
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:24px;color:#F1F5F9;margin-top:8px;">{{ balIncomeText }}</div>
+                </div>
+                <div style="flex:1;border-radius:16px;padding:16px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;">
+                  <div style="display:flex;align-items:center;gap:7px;"><i class="ph-fill ph-arrow-up-right" style="font-size:15px;color:#F87171;"></i><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#94A3B8;">Expenses</span></div>
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:24px;color:#F1F5F9;margin-top:8px;">{{ balExpensesText }}</div>
+                </div>
+              </div>
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:17px;color:#F1F5F9;margin:26px 2px 16px;">Spending by category</div>
+              <div style="display:flex;flex-direction:column;gap:16px;">
+                <sc-for list="{{ balBreakdown }}" as="b" hint-placeholder-count="4">
+                  <div style="{{ b.itemStyle }}">
+                    <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px;">
+                      <div style="{{ b.iconWrap }}"><i class="ph-duotone ph-{{ b.icon }}" style="font-size:18px;"></i></div>
+                      <span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:14px;color:#F1F5F9;">{{ b.label }}</span>
+                      <span style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:14px;color:#F1F5F9;">{{ b.amountText }}</span>
+                      <span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:12px;color:#5B6578;width:40px;text-align:right;">{{ b.pct }}</span>
+                    </div>
+                    <div style="height:7px;border-radius:999px;background:rgba(241,245,249,.06);overflow:hidden;"><div style="{{ b.barStyle }}"></div></div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showMov }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Transactions" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
+            <div style="padding:60px 22px 118px;">
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:26px;color:#F1F5F9;letter-spacing:-.02em;">Transactions</div>
+              <div style="display:flex;align-items:center;gap:12px;height:52px;padding:0 16px;border-radius:16px;background:#0C0E12;border:1px solid rgba(241,245,249,.07);margin-top:16px;animation:cardIn .5s ease .05s backwards;">
+                <i class="ph ph-magnifying-glass" style="font-size:19px;color:#5B6578;"></i>
+                <span style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:15px;color:#5B6578;">Search transactions</span>
+              </div>
+              <div style="display:flex;gap:9px;margin-top:14px;">
+                <button onClick="{{ filtAll.onPress }}" style="{{ filtAll.style }}">{{ filtAll.label }}</button>
+                <button onClick="{{ filtIncome.onPress }}" style="{{ filtIncome.style }}">{{ filtIncome.label }}</button>
+                <button onClick="{{ filtExpenses.onPress }}" style="{{ filtExpenses.style }}">{{ filtExpenses.label }}</button>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:9px;margin-top:18px;">
+                <sc-for list="{{ movList }}" as="t" hint-placeholder-count="6">
+                  <div style="{{ t.rowStyle }}" style-hover="background:#101319;transform:translateX(3px)">
+                    <div style="{{ t.iconWrap }}"><i class="ph-duotone ph-{{ t.icon }}" style="font-size:21px;"></i></div>
+                    <div style="flex:1;min-width:0;">
+                      <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ t.name }}</div>
+                      <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:12.5px;color:#5B6578;margin-top:2px;">{{ t.sub }}</div>
+                    </div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:16px;color:{{ t.amountColor }};">{{ t.amountText }}</div>
+                  </div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showCat }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Categorias" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
+            <div style="padding:60px 22px 40px;">
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:20px;">
+                <button onClick="{{ backHome }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.1);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:filter .2s,transform .15s;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)"><i class="ph-bold ph-caret-left" style="font-size:20px;"></i></button>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:24px;color:#F1F5F9;letter-spacing:-.02em;">Categories</div>
+              </div>
+              <button style="width:100%;height:56px;border-radius:14px;border:1.5px dashed rgba(51,144,253,.4);background:rgba(51,144,253,.06);color:#3390FD;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;"><i class="ph-bold ph-plus" style="font-size:18px;"></i>New category</button>
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.09em;color:#5B6578;margin:24px 2px 12px;">EXPENSES</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;">
+                <sc-for list="{{ catExpenses }}" as="c" hint-placeholder-count="9">
+                  <div style="{{ c.tileStyle }}" style-hover="transform:translateY(-3px);border-color:rgba(51,144,253,.45)"><div style="{{ c.iconWrap }}"><i class="ph-duotone ph-{{ c.icon }}" style="font-size:24px;"></i></div><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:12px;color:#94A3B8;">{{ c.label }}</span></div>
+                </sc-for>
+              </div>
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.09em;color:#5B6578;margin:24px 2px 12px;">INCOME</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:11px;">
+                <sc-for list="{{ catIncome }}" as="c" hint-placeholder-count="4">
+                  <div style="{{ c.tileStyle }}" style-hover="transform:translateY(-3px);border-color:rgba(51,144,253,.45)"><div style="{{ c.iconWrap }}"><i class="ph-duotone ph-{{ c.icon }}" style="font-size:24px;"></i></div><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:12px;color:#94A3B8;">{{ c.label }}</span></div>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showNuevo }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="NuevoMovimiento" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
+            <div style="padding:60px 22px 34px;display:flex;flex-direction:column;min-height:100%;">
+              <div style="display:flex;align-items:center;gap:14px;">
+                <button onClick="{{ backHomeNm }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.1);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:filter .2s,transform .15s;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)"><i class="ph-bold ph-caret-left" style="font-size:20px;"></i></button>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:22px;color:#F1F5F9;letter-spacing:-.02em;">{{ nmTitle }}</div>
+              </div>
+
+              <div style="text-align:center;margin:24px 0 8px;">
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:.09em;color:#94A3B8;">AMOUNT</div>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:38px;color:{{ nmAmountColor }};letter-spacing:-.03em;margin-top:4px;">{{ nmAmountText }}</div>
+              </div>
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.09em;color:#5B6578;margin:20px 2px 12px;">{{ nmSubtitle }}</div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
+                <sc-for list="{{ nmGridCats }}" as="c" hint-placeholder-count="9">
+                  <div onClick="{{ c.onPress }}" style="{{ c.tileStyle }}" style-hover="transform:translateY(-3px);border-color:rgba(51,144,253,.45)"><div style="{{ c.iconWrap }}"><i class="ph-duotone ph-{{ c.icon }}" style="font-size:22px;"></i></div><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:11.5px;color:#94A3B8;">{{ c.label }}</span></div>
+                </sc-for>
+              </div>
+              <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
+                <sc-for list="{{ nmKeys }}" as="k" hint-placeholder-count="12">
+                  <button onClick="{{ k.onPress }}" style="height:50px;border-radius:15px;border:1px solid rgba(241,245,249,.06);background:#0C0E12;color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .1s,background .15s;" style-hover="background:#141821" style-active="transform:scale(.94)"><sc-if value="{{ k.isDel }}" hint-placeholder-val="{{ false }}"><i class="ph-bold ph-backspace" style="font-size:22px;"></i></sc-if><sc-if value="{{ k.label }}" hint-placeholder-val="7">{{ k.label }}</sc-if></button>
+                </sc-for>
+              </div>
+              <button onClick="{{ nmConfirm }}" style="{{ nmConfirmStyle }}" style-hover="filter:brightness(1.1)" style-active="transform:scale(.985)">Confirm</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showProfile }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Profile" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
+            <div style="padding:64px 22px 118px;">
+              <div style="display:flex;flex-direction:column;align-items:center;text-align:center;">
+                <div style="width:150px;height:150px;border-radius:45px;background:linear-gradient(150deg,#3390FD,#2563EB);display:flex;align-items:center;justify-content:center;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:34px;color:#fff;box-shadow:0 14px 34px -10px rgba(37,99,235,.6);overflow:hidden;">
+                  <img src="./avatar-cropped.png" style="width:140%;height:140%;object-fit:cover;margin:0 auto;"/>
+                </div>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:24px;color:#F1F5F9;margin-top:16px;letter-spacing:-.02em;">Agostina Aldana</div>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:14px;color:#94A3B8;margin-top:3px;">aldana@onetap.com</div>
+              </div>
+              <div style="display:flex;gap:12px;margin-top:24px;">
+                <div style="flex:1;border-radius:16px;padding:16px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;text-align:center;">
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:11px;letter-spacing:.08em;color:#94A3B8;">BALANCE</div>
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:22px;color:#F1F5F9;margin-top:6px;">{{ totalBalanceText2 }}</div>
+                </div>
+                <div style="flex:1;border-radius:16px;padding:16px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;text-align:center;">
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:11px;letter-spacing:.08em;color:#94A3B8;">SAVINGS</div>
+                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:22px;color:#19E680;margin-top:6px;">{{ ahorroText }}</div>
+                </div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:22px;">
+                <button onClick="{{ goBalance }}" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;cursor:pointer;text-align:left;width:100%;"><div style="width:42px;height:42px;border-radius:13px;background:rgba(248,113,113,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-trend-up" style="font-size:22px;color:#F87171;"></i></div><span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Monthly expenses</span><i class="ph-bold ph-caret-right" style="font-size:16px;color:#5B6578;"></i></button>
+                <button onClick="{{ goBalance }}" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;cursor:pointer;text-align:left;width:100%;"><div style="width:42px;height:42px;border-radius:13px;background:rgba(25,230,128,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-trend-down" style="font-size:22px;color:#19E680;"></i></div><span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Monthly income</span><i class="ph-bold ph-caret-right" style="font-size:16px;color:#5B6578;"></i></button>
+                <button onClick="{{ openSettings }}" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;cursor:pointer;text-align:left;width:100%;"><div style="width:42px;height:42px;border-radius:13px;background:rgba(51,144,253,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-gear-six" style="font-size:22px;color:#3390FD;"></i></div><span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Settings</span><i class="ph-bold ph-caret-right" style="font-size:16px;color:#5B6578;"></i></button>
+                <button onClick="{{ logout }}" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:transparent;border:1px solid rgba(248,113,113,.2);cursor:pointer;text-align:left;width:100%;margin-top:4px;"><div style="width:42px;height:42px;border-radius:13px;background:rgba(248,113,113,.1);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-sign-out" style="font-size:22px;color:#F87171;"></i></div><span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F87171;">Log out</span></button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+        <sc-if value="{{ showSettings }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Configuracion" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
+            <div style="padding:60px 22px 40px;">
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+                <button onClick="{{ backProfile }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.1);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:filter .2s,transform .15s;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)"><i class="ph-bold ph-caret-left" style="font-size:20px;"></i></button>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:24px;color:#F1F5F9;letter-spacing:-.02em;">Settings</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:10px;">
+                <div style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;">
+                  <div style="width:42px;height:42px;border-radius:13px;background:rgba(51,144,253,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-bell" style="font-size:22px;color:#3390FD;"></i></div>
+                  <span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Notifications</span>
+                  <button onClick="{{ togNotif }}" style="{{ swNotif }}"><div style="{{ knNotif }}"></div></button>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;">
+                  <div style="width:42px;height:42px;border-radius:13px;background:rgba(51,144,253,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-fingerprint" style="font-size:22px;color:#3390FD;"></i></div>
+                  <span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Biometric login</span>
+                  <button onClick="{{ togBiometria }}" style="{{ swBiometria }}"><div style="{{ knBiometria }}"></div></button>
+                </div>
+                <div style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;">
+                  <div style="width:42px;height:42px;border-radius:13px;background:rgba(51,144,253,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-envelope-open" style="font-size:22px;color:#3390FD;"></i></div>
+                  <span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Monthly summary</span>
+                  <button onClick="{{ togResumen }}" style="{{ swResumen }}"><div style="{{ knResumen }}"></div></button>
+                </div>
+                <button onClick="{{ togLanguage }}" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;cursor:pointer;text-align:left;width:100%;">
+                  <div style="width:42px;height:42px;border-radius:13px;background:rgba(51,144,253,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-translate" style="font-size:22px;color:#3390FD;"></i></div>
+                  <span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Language</span>
+                  <span style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:13px;color:#3390FD;padding:5px 12px;border-radius:999px;background:rgba(51,144,253,.12);">{{ idioma }}</span>
+                </button>
+                <button onClick="{{ logout }}" style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:transparent;border:1px solid rgba(248,113,113,.2);cursor:pointer;text-align:left;width:100%;margin-top:6px;"><div style="width:42px;height:42px;border-radius:13px;background:rgba(248,113,113,.1);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-sign-out" style="font-size:22px;color:#F87171;"></i></div><span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F87171;">Log out</span></button>
+              </div>
+            </div>
+          </div>
+        </sc-if>
+
+
+        <sc-if value="{{ showHelp }}" hint-placeholder-val="{{ false }}">
+          <div data-screen-label="Help" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
+            <div style="padding:60px 22px 40px;">
+              <div style="display:flex;align-items:center;gap:14px;margin-bottom:22px;">
+                <button onClick="{{ backHome }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.1);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:filter .2s,transform .15s;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)"><i class="ph-bold ph-caret-left" style="font-size:20px;"></i></button>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:24px;color:#F1F5F9;letter-spacing:-.02em;">Help</div>
+              </div>
+
+              <div style="position:relative;border-radius:22px;padding:22px;background:linear-gradient(165deg,#0E1219,#080A0F);border:1px solid rgba(241,245,249,.08);overflow:hidden;box-shadow:0 18px 44px -22px rgba(0,0,0,.6);animation:cardIn .55s ease .04s backwards;">
+                <div style="position:absolute;top:-60px;right:-45px;width:170px;height:170px;border-radius:50%;background:radial-gradient(circle,rgba(51,144,253,.14),transparent 74%);"></div>
+                <div style="position:relative;display:flex;align-items:center;gap:14px;">
+                  <div style="width:48px;height:48px;border-radius:15px;background:rgba(51,144,253,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-question" style="font-size:25px;color:#3390FD;"></i></div>
+                  <div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:18px;color:#F1F5F9;letter-spacing:-.02em;">How can we help?</div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:14px;color:#94A3B8;margin-top:4px;line-height:1.4;">Find quick answers about transactions, categories and balance.</div>
+                  </div>
+                </div>
+              </div>
+
+              <div style="display:flex;flex-direction:column;gap:10px;margin-top:18px;">
+                <div style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .08s backwards;">
+                  <div style="width:42px;height:42px;border-radius:13px;background:rgba(25,230,128,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-plus-circle" style="font-size:22px;color:#19E680;"></i></div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Add income or expenses</div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:12.5px;color:#5B6578;margin-top:2px;">Use the Income and Expense buttons from Home.</div>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .12s backwards;">
+                  <div style="width:42px;height:42px;border-radius:13px;background:rgba(51,144,253,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-chart-pie-slice" style="font-size:22px;color:#3390FD;"></i></div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Review spending by category</div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:12.5px;color:#5B6578;margin-top:2px;">Open Balance to compare income, expenses and savings.</div>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .16s backwards;">
+                  <div style="width:42px;height:42px;border-radius:13px;background:rgba(192,107,255,.12);display:flex;align-items:center;justify-content:center;"><i class="ph-duotone ph-squares-four" style="font-size:22px;color:#C06BFF;"></i></div>
+                  <div style="flex:1;min-width:0;">
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">Manage categories</div>
+                    <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:12.5px;color:#5B6578;margin-top:2px;">Use Categories to organize your financial movements.</div>
+                  </div>
+                </div>
+              </div>
+
+              <button onClick="{{ backHome }}" style="width:100%;height:56px;border:none;border-radius:16px;background:linear-gradient(150deg,#3390FD,#2563EB);color:#fff;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:16px;cursor:pointer;box-shadow:0 14px 30px -6px rgba(37,99,235,.6);transition:transform .18s,box-shadow .25s;margin-top:22px;" style-hover="transform:translateY(-2px);box-shadow:0 22px 46px -8px rgba(37,99,235,.95)" style-active="transform:scale(.97)">Back to Home</button>
+            </div>
+          </div>
+        </sc-if>
+
+        <!-- more-screens -->
+      </div>
+
+      <sc-if value="{{ showNav }}" hint-placeholder-val="{{ true }}">
+        <div style="position:absolute;bottom:0;left:0;right:0;height:92px;z-index:30;background:linear-gradient(0deg,#040507 74%,rgba(4,5,7,0));backdrop-filter:blur(12px);border-top:1px solid rgba(241,245,249,.06);display:flex;align-items:flex-start;justify-content:space-around;padding:14px 14px 0;">
+          <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="4">
+            <button onClick="{{ n.onPress }}" style="background:none;border:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding:6px 12px;transition:transform .18s;" style-hover="transform:translateY(-3px)" style-active="transform:scale(.9)">
+              <i class="ph-{{ n.weight }} ph-{{ n.icon }}" style="font-size:25px;color:{{ n.color }};"></i>
+              <span style="font-family:'Instrument Sans',sans-serif;font-weight:{{ n.fw }};font-size:11px;color:{{ n.color }};">{{ n.label }}</span>
+            </button>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <sc-if value="{{ showSuccess }}" hint-placeholder-val="{{ false }}">
+        <div style="position:absolute;inset:0;z-index:60;background:rgba(2,3,5,.86);backdrop-filter:blur(8px);display:flex;flex-direction:column;align-items:center;justify-content:center;padding:40px;animation:screenIn .3s ease;">
+          <div style="width:104px;height:104px;border-radius:50%;background:{{ successRingBg }};display:flex;align-items:center;justify-content:center;animation:checkPop .5s cubic-bezier(.2,1.3,.4,1);">
+            <i class="ph-fill ph-check" style="font-size:52px;color:{{ successColor }};"></i>
+          </div>
+          <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:26px;color:#F1F5F9;margin-top:26px;letter-spacing:-.02em;">{{ successTitle }}</div>
+          <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:32px;color:{{ successColor }};margin-top:6px;">{{ successAmountText }}</div>
+          <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:15px;color:#94A3B8;margin-top:6px;">{{ successCatLabel }}</div>
+          <button onClick="{{ successContinue }}" style="margin-top:36px;width:100%;height:56px;border:none;border-radius:14px;background:linear-gradient(150deg,#3390FD,#2563EB);color:#fff;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:16px;cursor:pointer;box-shadow:0 14px 30px -6px rgba(37,99,235,.6);transition:transform .18s,box-shadow .25s;animation:ctaGlow 3.4s ease-in-out infinite;" style-hover="transform:translateY(-2px);box-shadow:0 22px 46px -8px rgba(37,99,235,.95)" style-active="transform:scale(.97)">Done</button>
+        </div>
+      </sc-if>
+
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:480,&quot;height&quot;:950}}">
+class Component extends DCLogic {
+  C = {
+    txt:'#F1F5F9', sub:'#94A3B8', mut:'#5B6578',
+    blue:'#3390FD', green:'#19E680', red:'#F87171',
+  };
+  cats = {
+    comida:{label:'Food',icon:'fork-knife',color:'#FF7A9C'},
+    transporte:{label:'Transport',icon:'car',color:'#3390FD'},
+    compras:{label:'Shopping',icon:'shopping-bag',color:'#C06BFF'},
+    viajes:{label:'Travel',icon:'airplane-tilt',color:'#2FD3C0'},
+    ocio:{label:'Leisure',icon:'popcorn',color:'#8A7CFF'},
+    servicios:{label:'Services',icon:'wrench',color:'#4CC9F0'},
+    salud:{label:'Health',icon:'heartbeat',color:'#F87171'},
+    educacion:{label:'Education',icon:'graduation-cap',color:'#6C8BFF'},
+    otros:{label:'Other',icon:'dots-three-outline',color:'#94A3B8'},
+    salario:{label:'Salary',icon:'money',color:'#19E680'},
+    freelance:{label:'Freelance',icon:'laptop',color:'#4CC9F0'},
+    transferencia:{label:'Transfer',icon:'bank',color:'#7CE0A0'},
+  };
+  state = {
+    screen:'onboarding', tab:'home', showMenu:false,
+    nmType:'gasto', nmAmount:'', nmCategory:null,
+    movFilter:'todos', monthIdx:2,
+    sNotif:true, sBiometria:true, sResumen:true, sLanguage:'ES',
+    transactions:[
+      {id:1,name:'Supermarket',type:'gasto',amount:2100,category:'comida',date:'Today 15:20'},
+      {id:2,name:'Shell Gas',type:'gasto',amount:1500,category:'transporte',date:'Today 09:15'},
+      {id:3,name:'Salary',type:'ingreso',amount:9000,category:'salario',date:'Yesterday'},
+      {id:4,name:'Uber',type:'gasto',amount:850,category:'transporte',date:'24 Mar'},
+      {id:5,name:'Zara',type:'gasto',amount:1830,category:'compras',date:'22 Mar'},
+      {id:6,name:'Cinemark',type:'gasto',amount:350,category:'ocio',date:'22 Mar'},
+      {id:7,name:'Netflix',type:'gasto',amount:490,category:'ocio',date:'20 Mar'},
+      {id:8,name:'Freelance',type:'ingreso',amount:2500,category:'freelance',date:'18 Mar'},
+      {id:9,name:"McDonald's",type:'gasto',amount:620,category:'comida',date:'18 Mar'},
+      {id:10,name:'Spotify',type:'gasto',amount:500,category:'ocio',date:'12 Mar'},
+      {id:11,name:'Transfer',type:'ingreso',amount:1000,category:'transferencia',date:'8 Mar'},
+    ],
+  };
+  BASE = 6240;
+  months = ['January 2026','February 2026','March 2026','April 2026','May 2026','June 2026'];
+
+  rgba(hex,a){const h=hex.replace('#','');const r=parseInt(h.slice(0,2),16),g=parseInt(h.slice(2,4),16),b=parseInt(h.slice(4,6),16);return `rgba(${r},${g},${b},${a})`;}
+  fmt(n){return '$'+Math.round(n).toLocaleString('en-US');}
+  fmtDec(n){return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
+
+  go(screen,tab){this.setState(tab?{screen,tab}:{screen});}
+  iconWrap(color,size){return {width:size,height:size,borderRadius:size*0.30,flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(241,245,249,0.05)',border:'1px solid rgba(241,245,249,0.06)',color:'#AEB9CC'};}
+
+  toRow(t,i){
+    const c=this.cats[t.category]||this.cats.otros;
+    const inc=t.type==='ingreso';
+    return {name:t.name,sub:c.label+' · '+t.date,icon:c.icon,
+      iconWrap:this.iconWrap(c.color,42),
+      amountText:(inc?'+':'−')+this.fmt(t.amount),
+      amountColor:inc?this.C.green:this.C.red,rowStyle:{display:'flex',alignItems:'center',gap:13,padding:'13px 14px',borderRadius:14,background:'#0C0E12',border:'1px solid rgba(241,245,249,.05)',transition:'background .2s,transform .18s',animation:'cardIn .5s ease backwards',animationDelay:((i||0)*0.05)+'s'}};
+  }
+  totals(){
+    let ing=0,gas=0;
+    this.state.transactions.forEach(t=>{if(t.type==='ingreso')ing+=t.amount;else gas+=t.amount;});
+    return {ing,gas,neto:ing-gas};
+  }
+
+  tile(key,c,selected,onPress,i){
+    const col='#3390FD';
+    const isClickable=onPress.toString().includes('setState');
+    return {key,label:c.label,icon:c.icon,onPress:isClickable?onPress:()=>{},
+      tileStyle:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:10,height:82,borderRadius:18,cursor:isClickable?'pointer':'default',transition:'transform .18s',animation:'cardIn .45s ease backwards',animationDelay:((i||0)*0.04)+'s',
+        background:selected?this.rgba(col,0.18):'#0C0E12',
+        border:selected?`1.5px solid ${col}`:'1px solid rgba(241,245,249,.06)',
+        boxShadow:selected?`0 0 22px -6px ${this.rgba(col,0.7)}`:'none'},
+      iconWrap:this.iconWrap(col,46)};
+  }
+
+  renderVals(){
+    const s=this.state, C=this.C;
+    const t=this.totals();
+    const totalBalance=this.BASE+t.neto;
+    const screen=s.screen;
+
+    // nuevo movimiento
+    const isExpense=s.nmType==='gasto';
+    const nmKeysRaw=['1','2','3','4','5','6','7','8','9','000','0','del'];
+    const nmKeys=nmKeysRaw.map(k=>({label:k==='del'?'':k,icon:k==='del'?'backspace':null,isDel:k==='del',
+      onPress:()=>{
+        if(k==='del'){this.setState({nmAmount:s.nmAmount.slice(0,-1)});}
+        else{let v=s.nmAmount+k;if(v.replace(/^0+/,'').length<=7)this.setState({nmAmount:v.replace(/^0+(?=\d)/,'')});}
+      }}));
+    const nmAmt=s.nmAmount?parseInt(s.nmAmount,10):0;
+    const nmCatKeys=isExpense?['comida','transporte','compras','viajes','ocio','servicios','salud','educacion','otros']:['salario','freelance','transferencia','otros'];
+    const nmGridCats=nmCatKeys.map((k,i)=>this.tile(k,this.cats[k],s.nmCategory===k,()=>this.setState({nmCategory:k}),i));
+    const nmCanConfirm=nmAmt>0 && !!s.nmCategory;
+
+    // categorias
+    const gastoKeys=['ocio','viajes','transporte','compras','servicios','salud','educacion','comida','otros'];
+    const ingresoKeys=['freelance','transferencia','salario','otros'];
+    const catExpenses=gastoKeys.map((k,i)=>this.tile(k,this.cats[k],false,()=>{},i));
+    const catIncome=ingresoKeys.map((k,i)=>this.tile(k,this.cats[k],false,()=>{},i));
+
+    // balance breakdown
+    const gByCat={};
+    s.transactions.filter(x=>x.type==='gasto').forEach(x=>{gByCat[x.category]=(gByCat[x.category]||0)+x.amount;});
+    const balBreakdown=Object.keys(gByCat).sort((a,b)=>gByCat[b]-gByCat[a]).map((k,i)=>{
+      const c=this.cats[k];const pct=Math.round(gByCat[k]/t.gas*100);
+      return {label:c.label,icon:c.icon,amountText:this.fmt(gByCat[k]),pct:pct+'%',itemStyle:{animation:'cardIn .5s ease backwards',animationDelay:(i*0.07)+'s'},
+        iconWrap:this.iconWrap(c.color,38),
+        barStyle:{height:'100%',width:pct+'%',borderRadius:999,background:'linear-gradient(90deg,#2563EB,#3390FD)'}};
+    });
+
+    // movimientos filter
+    const filt=s.transactions.filter(x=>s.movFilter==='todos'?true:(s.movFilter==='ingresos'?x.type==='ingreso':x.type==='gasto'));
+    const mkFilter=(key,label)=>({label,onPress:()=>this.setState({movFilter:key}),
+      style:{flex:1,height:42,borderRadius:14,cursor:'pointer',fontFamily:'Instrument Sans, sans-serif',fontWeight:700,fontSize:14,transition:'all .18s',
+        border:s.movFilter===key?'1px solid '+this.rgba(C.blue,0.5):'1px solid rgba(241,245,249,.08)',
+        background:s.movFilter===key?this.rgba(C.blue,0.16):'transparent',
+        color:s.movFilter===key?C.blue:C.sub}});
+
+    // nav
+    const navDef=[['home','Home','house'],['balance','Balance','chart-line-up'],['movimientos','Transactions','arrows-left-right'],['perfil','Profile','user']];
+    const navItems=navDef.map(([key,label,icon])=>{const on=s.tab===key;return {label,icon,weight:on?'fill':'duotone',fw:on?700:600,color:on?C.blue:C.mut,onPress:()=>this.go(key,key)};});
+
+    // home chips
+    const chipKeys=['comida','transporte','compras','viajes'];
+    const catChips=chipKeys.map((k,i)=>({label:this.cats[k].label,icon:this.cats[k].icon,iconWrap:this.iconWrap(this.cats[k].color,38),onPress:()=>this.openNuevoExpense(),chipStyle:{display:'flex',flexDirection:'column',alignItems:'center',gap:8,padding:'12px 8px',borderRadius:16,background:'#0C0E12',border:'1px solid rgba(241,245,249,.06)',cursor:'pointer',transition:'transform .18s,border-color .2s,background .2s',animation:'cardIn .5s ease backwards',animationDelay:(i*0.05)+'s'}}));
+
+    return {
+      showOnboarding:screen==='onboarding', showLogin:screen==='login', showHome:screen==='home',
+      showBalance:screen==='balance', showMov:screen==='movimientos', showCat:screen==='categorias',
+      showNuevo:screen==='nuevo', showProfile:screen==='perfil', showSettings:screen==='settings', showHelp:screen==='help',
+      showSuccess:screen==='success', showMenu:s.showMenu,
+      showNav:['home','balance','movimientos','perfil'].includes(screen),
+
+      toHome:()=>this.go('home','home'), toLogin:()=>this.go('login'), toOnboarding:()=>this.go('onboarding'),
+      goHome:()=>this.go('home','home'), goBalance:()=>this.go('balance','balance'),
+      goMov:()=>this.go('movimientos','movimientos'), goProfile:()=>this.go('perfil','perfil'),
+      openCategorias:()=>{this.setState({showMenu:false});this.go('categorias');}, openSettings:()=>{this.setState({showMenu:false});this.go('settings');},
+      openHelp:()=>{this.setState({showMenu:false});this.go('help');},
+      openMenu:()=>this.setState({showMenu:!s.showMenu}),
+      backHome:()=>this.go('home','home'), backProfile:()=>this.go('perfil','perfil'),
+      logout:()=>this.setState({screen:'onboarding',tab:'home',showMenu:false}),
+      openNuevoExpense:()=>this.openNuevoExpense(), openNuevoIncome:()=>this.setState({screen:'nuevo',nmType:'ingreso',nmAmount:'',nmCategory:'salario'}),
+
+      totalBalanceText:this.fmtDec(totalBalance),
+      recentTx:s.transactions.slice(0,5).map((x,i)=>this.toRow(x,i)),
+      catChips, navItems,
+
+      // balance
+      monthLabel:this.months[s.monthIdx],
+      prevMonth:()=>this.setState({monthIdx:Math.max(0,s.monthIdx-1)}),
+      nextMonth:()=>this.setState({monthIdx:Math.min(this.months.length-1,s.monthIdx+1)}),
+      balNetoText:this.fmtDec(t.neto), balIncomeText:this.fmt(t.ing), balExpensesText:this.fmt(t.gas),
+      balAhorroText:Math.round(t.neto/t.ing*100)+'%',
+      balBreakdown, balRecent:s.transactions.slice(2,6).map(x=>this.toRow(x)),
+
+      // movimientos
+      movList:filt.reverse().map((x,i)=>this.toRow(x,i)),
+      filtAll:mkFilter('todos','All'), filtIncome:mkFilter('ingresos','Income'), filtExpenses:mkFilter('gastos','Expenses'),
+
+      // categorias
+      catExpenses, catIncome,
+
+      // nuevo
+      nmTitle:isExpense?'New expense':'New income',
+      nmAmountText:this.fmt(nmAmt),
+      nmAmountColor:nmAmt>0?C.txt:C.mut,
+      nmDateText:'Today, 14:30',
+      nmKeys, nmGridCats, nmCanConfirm,
+      nmSubtitle:isExpense?'SELECT A CATEGORY':'SELECT A CATEGORY',
+      nmConfirmStyle:{width:'100%',height:58,border:'none',borderRadius:20,fontFamily:'Instrument Sans, sans-serif',fontWeight:600,fontSize:17,
+        cursor:nmCanConfirm?'pointer':'default',color:nmCanConfirm?'#fff':C.mut,
+        background:nmCanConfirm?(isExpense?'linear-gradient(150deg,#F87171,#e5484d)':'linear-gradient(150deg,#19E680,#12b869)'):'#0C0E12',
+        boxShadow:nmCanConfirm?'0 14px 30px -8px rgba(0,0,0,.5)':'none',transition:'all .2s'},
+      nmTypeExpenseStyle:this.segStyle(isExpense,C.red),
+      nmTypeIncomeStyle:this.segStyle(!isExpense,C.green),
+      setNmExpense:()=>this.setState({nmType:'gasto',nmCategory:null}),
+      setNmIncome:()=>this.setState({nmType:'ingreso',nmCategory:null}),
+      nmConfirm:()=>{if(nmCanConfirm)this.confirmNm();},
+      backHomeNm:()=>this.go('home','home'),
+
+      // success
+      successTitle:s.successType==='ingreso'?'Income added!':'Expense added!',
+      successAmountText:(s.successType==='ingreso'?'+':'−')+this.fmt(s.successAmount||0),
+      successColor:s.successType==='ingreso'?C.green:C.red,
+      successRingBg:this.rgba(s.successType==='ingreso'?C.green:C.red,0.16),
+      successCatLabel:s.successCat?this.cats[s.successCat].label:'',
+      successContinue:()=>this.setState({screen:'home',tab:'home',nmAmount:'',nmCategory:null}),
+
+      // perfil
+      totalBalanceText2:this.fmtDec(totalBalance),
+      ahorroText:this.fmt(1120),
+      // settings
+      tNotif:s.sNotif, tBiometria:s.sBiometria, tResumen:s.sResumen, idioma:s.sLanguage,
+      togNotif:()=>this.setState({sNotif:!s.sNotif}), togBiometria:()=>this.setState({sBiometria:!s.sBiometria}),
+      togResumen:()=>this.setState({sResumen:!s.sResumen}), togLanguage:()=>this.setState({sLanguage:s.sLanguage==='ES'?'EN':'ES'}),
+      swNotif:this.swStyle(s.sNotif), swBiometria:this.swStyle(s.sBiometria), swResumen:this.swStyle(s.sResumen),
+      knNotif:this.knStyle(s.sNotif), knBiometria:this.knStyle(s.sBiometria), knResumen:this.knStyle(s.sResumen),
+    };
+  }
+  segStyle(active,col){return {flex:1,height:44,borderRadius:14,cursor:'pointer',fontFamily:'Instrument Sans, sans-serif',fontWeight:700,fontSize:15,transition:'all .18s',
+    border:active?'1px solid '+this.rgba(col,0.5):'1px solid rgba(241,245,249,.08)',
+    background:active?this.rgba(col,0.16):'transparent',color:active?col:this.C.sub,display:'flex',alignItems:'center',justifyContent:'center',gap:7};}
+  swStyle(on){return {width:48,height:28,borderRadius:999,flexShrink:0,cursor:'pointer',transition:'background .2s',position:'relative',border:'none',background:on?this.C.blue:'#2A3448'};}
+  knStyle(on){return {position:'absolute',top:3,left:on?23:3,width:22,height:22,borderRadius:'50%',background:'#fff',transition:'left .2s'};}
+
+  openNuevoExpense(){this.setState({screen:'nuevo',nmType:'gasto',nmAmount:'',nmCategory:null});}
+  confirmNm(){
+    const s=this.state;const amt=parseInt(s.nmAmount,10);
+    const tx={id:Date.now(),name:this.cats[s.nmCategory].label,type:s.nmType,amount:amt,category:s.nmCategory,date:'Today'};
+    this.setState({transactions:[tx,...s.transactions],screen:'success',successType:s.nmType,successAmount:amt,successCat:s.nmCategory});
+  }
+}
+</script>
+</body>
+</html>
