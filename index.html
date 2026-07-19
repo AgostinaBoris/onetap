@@ -183,7 +183,12 @@
                 </div>
                 <button onClick="{{ openMenu }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.08);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;position:relative;transition:transform .18s,background .2s;" style-hover="background:#141821;transform:translateY(-1px)" style-active="transform:scale(.92)"><i class="ph-bold ph-list" style="font-size:22px;"></i></button>
                 <sc-if value="{{ showMenu }}" hint-placeholder-val="{{ false }}">
+                  <div onClick="{{ closeMenu }}" style="position:fixed;inset:0;z-index:90;background:transparent;"></div>
                   <div style="position:absolute;top:60px;right:0;z-index:100;width:260px;border-radius:14px;background:#0C0E12;border:1px solid rgba(241,245,249,.08);box-shadow:0 12px 32px rgba(0,0,0,.6);animation:cardIn .25s ease;overflow:hidden;">
+                    <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(241,245,249,.06);">
+                      <span style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:13px;color:#94A3B8;">Menu</span>
+                      <button onClick="{{ closeMenu }}" style="width:30px;height:30px;border-radius:10px;border:none;background:rgba(241,245,249,.06);color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:#141821"><i class="ph-bold ph-x" style="font-size:15px;"></i></button>
+                    </div>
                     <button onClick="{{ openCategorias }}" style="width:100%;padding:16px 18px;text-align:left;background:none;border:none;border-bottom:1px solid rgba(241,245,249,.06);color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;" style-hover="background:#141821;color:#3390FD">Categories</button>
                     <button onClick="{{ goBalance }}" style="width:100%;padding:16px 18px;text-align:left;background:none;border:none;border-bottom:1px solid rgba(241,245,249,.06);color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;" style-hover="background:#141821;color:#3390FD">Spending by Category</button>
                     <button onClick="{{ openSettings }}" style="width:100%;padding:16px 18px;text-align:left;background:none;border:none;border-bottom:1px solid rgba(241,245,249,.06);color:#F1F5F9;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:15px;cursor:pointer;transition:background .2s;" style-hover="background:#141821;color:#3390FD">Settings</button>
@@ -245,43 +250,25 @@
         <sc-if value="{{ showBalance }}" hint-placeholder-val="{{ false }}">
           <div data-screen-label="Balance" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
             <div style="padding:60px 22px 118px;">
-              <sc-if value="{{ showBalanceBack }}" hint-placeholder-val="{{ false }}">
-                <button onClick="{{ closeBalanceDetail }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.1);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:filter .2s,transform .15s;margin-bottom:16px;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)"><i class="ph-bold ph-caret-left" style="font-size:20px;"></i></button>
-              </sc-if>
-              <div style="text-align:center;">
-                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:12px;letter-spacing:.09em;color:#94A3B8;">NET BALANCE</div>
-                <div style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:33px;color:#F5F7FB;letter-spacing:-.02em;margin-top:6px;">{{ balNetoText }}</div>
-                <div style="display:inline-flex;align-items:center;gap:6px;margin-top:8px;padding:5px 12px;border-radius:999px;background:rgba(25,230,128,.12);">
-                  <i class="ph-fill ph-trend-up" style="font-size:13px;color:#19E680;"></i>
-                  <span style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:13px;color:#19E680;">Saved {{ balAhorroText }} this month</span>
+              <button onClick="{{ closeBalanceDetail }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.1);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:filter .2s,transform .15s;margin-bottom:16px;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)"><i class="ph-bold ph-caret-left" style="font-size:20px;"></i></button>
+              <div style="border-radius:20px;padding:20px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease backwards;">
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#94A3B8;">Total spent this month</div>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:34px;color:#F5F7FB;letter-spacing:-.02em;margin-top:6px;">{{ balTotalSpentText }}</div>
+                <div style="display:flex;align-items:center;gap:5px;margin-top:8px;">
+                  <i class="ph-bold ph-trend-down" style="font-size:13px;color:#19E680;"></i>
+                  <span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#19E680;">{{ balVsLastMonthText }} vs last month</span>
                 </div>
               </div>
-              <div style="display:flex;align-items:center;justify-content:center;gap:20px;margin:22px 0;">
-                <button onClick="{{ prevMonth }}" style="width:34px;height:34px;border-radius:10px;border:1px solid rgba(241,245,249,.08);background:#0C0E12;color:#94A3B8;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="ph-bold ph-caret-left"></i></button>
-                <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;letter-spacing:.05em;color:#F1F5F9;min-width:132px;text-align:center;">{{ monthLabel }}</div>
-                <button onClick="{{ nextMonth }}" style="width:34px;height:34px;border-radius:10px;border:1px solid rgba(241,245,249,.08);background:#0C0E12;color:#94A3B8;cursor:pointer;display:flex;align-items:center;justify-content:center;"><i class="ph-bold ph-caret-right"></i></button>
-              </div>
-              <div style="display:flex;gap:12px;">
-                <div style="flex:1;border-radius:16px;padding:16px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;">
-                  <div style="display:flex;align-items:center;gap:7px;"><i class="ph-fill ph-arrow-down-left" style="font-size:15px;color:#19E680;"></i><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#94A3B8;">Income</span></div>
-                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:24px;color:#F1F5F9;margin-top:8px;">{{ balIncomeText }}</div>
-                </div>
-                <div style="flex:1;border-radius:16px;padding:16px;background:#0C0E12;border:1px solid rgba(241,245,249,.06);animation:cardIn .5s ease .05s backwards;">
-                  <div style="display:flex;align-items:center;gap:7px;"><i class="ph-fill ph-arrow-up-right" style="font-size:15px;color:#F87171;"></i><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:13px;color:#94A3B8;">Expenses</span></div>
-                  <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:24px;color:#F1F5F9;margin-top:8px;">{{ balExpensesText }}</div>
-                </div>
-              </div>
-              <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:17px;color:#F1F5F9;margin:26px 2px 16px;">Spending by category</div>
-              <div style="display:flex;flex-direction:column;gap:16px;">
+              <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.09em;color:#5B6578;margin:26px 2px 14px;">DISTRIBUTION</div>
+              <div style="display:flex;flex-direction:column;gap:18px;">
                 <sc-for list="{{ balBreakdown }}" as="b" hint-placeholder-count="4">
                   <div style="{{ b.itemStyle }}">
-                    <div style="display:flex;align-items:center;gap:11px;margin-bottom:9px;">
-                      <div style="{{ b.iconWrap }}"><i class="ph-duotone ph-{{ b.icon }}" style="font-size:18px;"></i></div>
-                      <span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:14px;color:#F1F5F9;">{{ b.label }}</span>
-                      <span style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:14px;color:#F1F5F9;">{{ b.amountText }}</span>
-                      <span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:12px;color:#5B6578;width:40px;text-align:right;">{{ b.pct }}</span>
+                    <div style="display:flex;align-items:center;gap:12px;margin-bottom:9px;">
+                      <div style="{{ b.iconWrap }}"><i class="ph-duotone ph-{{ b.icon }}" style="font-size:19px;"></i></div>
+                      <span style="flex:1;font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">{{ b.label }}</span>
+                      <span style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:15px;color:#F1F5F9;">{{ b.amountText }}</span>
                     </div>
-                    <div style="height:7px;border-radius:999px;background:rgba(241,245,249,.06);overflow:hidden;"><div style="{{ b.barStyle }}"></div></div>
+                    <div style="{{ b.barTrackStyle }}"><div style="{{ b.barStyle }}"></div></div>
                   </div>
                 </sc-for>
               </div>
@@ -357,7 +344,7 @@
               <div style="font-family:'Instrument Sans',sans-serif;font-weight:700;font-size:12px;letter-spacing:.09em;color:#5B6578;margin:20px 2px 12px;">{{ nmSubtitle }}</div>
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:20px;">
                 <sc-for list="{{ nmGridCats }}" as="c" hint-placeholder-count="9">
-                  <div onClick="{{ c.onPress }}" style="{{ c.tileStyle }}" style-hover="transform:translateY(-3px);border-color:rgba(51,144,253,.45)"><div style="{{ c.iconWrap }}"><i class="ph-duotone ph-{{ c.icon }}" style="font-size:22px;"></i></div><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:11.5px;color:#94A3B8;">{{ c.label }}</span></div>
+                  <div onClick="{{ c.onPress }}" style="{{ c.tileStyle }}" style-hover="transform:translateY(-3px);border-color:rgba(140,200,255,.7)"><div style="{{ c.iconWrap }}"><i class="ph-duotone ph-{{ c.icon }}" style="font-size:22px;"></i></div><span style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:11.5px;color:#CBD5E1;">{{ c.label }}</span></div>
                 </sc-for>
               </div>
               <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:14px;">
@@ -562,7 +549,7 @@ class Component extends DCLogic {
   fmtDec(n){return '$'+Number(n).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
 
   go(screen,tab){this.setState(tab?{screen,tab}:{screen});}
-  iconWrap(color,size){return {width:size,height:size,borderRadius:size*0.30,flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(241,245,249,0.05)',border:'1px solid rgba(241,245,249,0.06)',color:'#AEB9CC'};}
+  iconWrap(color,size){return {width:size,height:size,borderRadius:size*0.30,flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',background:'rgba(90,170,255,.16)',border:'1px solid rgba(120,190,255,.4)',color:'#BFE0FF'};}
 
   toRow(t,i){
     const c=this.cats[t.category]||this.cats.otros;
@@ -579,14 +566,15 @@ class Component extends DCLogic {
   }
 
   tile(key,c,selected,onPress,i){
-    const col='#3390FD';
     const isClickable=onPress.toString().includes('setState');
     return {key,label:c.label,icon:c.icon,onPress:isClickable?onPress:()=>{},
-      tileStyle:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:10,height:82,borderRadius:18,cursor:isClickable?'pointer':'default',transition:'transform .18s',animation:'cardIn .45s ease backwards',animationDelay:((i||0)*0.04)+'s',
-        background:selected?this.rgba(col,0.18):'#0C0E12',
-        border:selected?`1.5px solid ${col}`:'1px solid rgba(241,245,249,.06)',
-        boxShadow:selected?`0 0 22px -6px ${this.rgba(col,0.7)}`:'none'},
-      iconWrap:this.iconWrap(col,46)};
+      tileStyle:{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',gap:9,height:92,borderRadius:20,cursor:isClickable?'pointer':'default',
+        transition:'transform .18s,border-color .2s,box-shadow .2s',animation:'cardIn .45s ease backwards',animationDelay:((i||0)*0.04)+'s',
+        background:'radial-gradient(120% 130% at 50% 6%, #163a6e 0%, #0c1f3e 55%, #060e1f 100%)',
+        border:selected?'1.5px solid rgba(140,200,255,.9)':'1px solid rgba(90,170,255,.32)',
+        boxShadow:selected?'0 0 24px -4px rgba(70,160,255,.75), inset 0 0 18px rgba(51,144,253,.24)':'0 0 14px -8px rgba(51,144,253,.4)'},
+      iconWrap:{width:44,height:44,borderRadius:13,flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',
+        background:'rgba(90,170,255,.16)',border:'1px solid rgba(120,190,255,.4)',color:'#BFE0FF'}};
   }
 
   renderVals(){
@@ -619,9 +607,10 @@ class Component extends DCLogic {
     s.transactions.filter(x=>x.type==='gasto').forEach(x=>{gByCat[x.category]=(gByCat[x.category]||0)+x.amount;});
     const balBreakdown=Object.keys(gByCat).sort((a,b)=>gByCat[b]-gByCat[a]).map((k,i)=>{
       const c=this.cats[k];const pct=Math.round(gByCat[k]/t.gas*100);
-      return {label:c.label,icon:c.icon,amountText:this.fmt(gByCat[k]),pct:pct+'%',itemStyle:{animation:'cardIn .5s ease backwards',animationDelay:(i*0.07)+'s'},
-        iconWrap:this.iconWrap(c.color,38),
-        barStyle:{height:'100%',width:pct+'%',borderRadius:999,background:'linear-gradient(90deg,#2563EB,#3390FD)'}};
+      return {label:c.label,icon:c.icon,amountText:this.fmtDec(gByCat[k]),pct:pct+'%',itemStyle:{animation:'cardIn .5s ease backwards',animationDelay:(i*0.07)+'s'},
+        iconWrap:{width:44,height:44,borderRadius:13,flexShrink:0,display:'flex',alignItems:'center',justifyContent:'center',background:this.rgba(c.color,0.18),color:c.color},
+        barTrackStyle:{height:8,borderRadius:999,background:'rgba(241,245,249,.14)',overflow:'hidden'},
+        barStyle:{height:'100%',width:pct+'%',borderRadius:999,background:c.color}};
     });
 
     // movimientos filter
@@ -638,7 +627,7 @@ class Component extends DCLogic {
 
     // home chips
     const chipKeys=['comida','transporte','compras','viajes'];
-    const catChips=chipKeys.map((k,i)=>({label:this.cats[k].label,icon:this.cats[k].icon,iconWrap:this.iconWrap(this.cats[k].color,38),onPress:()=>this.openNuevoExpense(),chipStyle:{display:'flex',flexDirection:'column',alignItems:'center',gap:8,padding:'12px 8px',borderRadius:16,background:'#0C0E12',border:'1px solid rgba(241,245,249,.06)',cursor:'pointer',transition:'transform .18s,border-color .2s,background .2s',animation:'cardIn .5s ease backwards',animationDelay:(i*0.05)+'s'}}));
+    const catChips=chipKeys.map((k,i)=>({label:this.cats[k].label,icon:this.cats[k].icon,iconWrap:this.iconWrap(this.cats[k].color,38),onPress:()=>this.openNuevoExpense(),chipStyle:{display:'flex',flexDirection:'column',alignItems:'center',gap:8,padding:'12px 8px',borderRadius:16,background:'radial-gradient(120% 130% at 50% 6%, #163a6e 0%, #0c1f3e 55%, #060e1f 100%)',border:'1px solid rgba(90,170,255,.32)',boxShadow:'0 0 14px -8px rgba(51,144,253,.4)',cursor:'pointer',transition:'transform .18s,border-color .2s,box-shadow .2s',animation:'cardIn .5s ease backwards',animationDelay:(i*0.05)+'s'}}));
 
     return {
       showOnboarding:screen==='onboarding', showLogin:screen==='login', showSignup:screen==='signup', showSignupSuccess:screen==='signupSuccess', showHome:screen==='home',
@@ -651,12 +640,11 @@ class Component extends DCLogic {
       createAccount:()=>this.go('signupSuccess'),
       goHome:()=>this.go('home','home'), goBalance:()=>{this.setState({cameFromProfile:false});this.go('balance','balance');},
       openBalanceFromProfile:()=>this.setState({screen:'balance',cameFromProfile:true}),
-      closeBalanceDetail:()=>this.setState({screen:'perfil',cameFromProfile:false}),
-      showBalanceBack:s.cameFromProfile,
+      closeBalanceDetail:()=>this.setState(s.cameFromProfile?{screen:'perfil',cameFromProfile:false}:{screen:'home',tab:'home',cameFromProfile:false}),
       goMov:()=>this.go('movimientos','movimientos'), goProfile:()=>this.go('perfil','perfil'),
       openCategorias:()=>{this.setState({showMenu:false});this.go('categorias');}, openSettings:()=>{this.setState({showMenu:false});this.go('settings');},
       openHelp:()=>{this.setState({showMenu:false});this.go('help');},
-      openMenu:()=>this.setState({showMenu:!s.showMenu}),
+      openMenu:()=>this.setState({showMenu:!s.showMenu}), closeMenu:()=>this.setState({showMenu:false}),
       backHome:()=>this.go('home','home'), backProfile:()=>this.go('perfil','perfil'),
       logout:()=>this.setState({screen:'onboarding',tab:'home',showMenu:false}),
       openNuevoExpense:()=>this.openNuevoExpense(), openNuevoIncome:()=>this.setState({screen:'nuevo',nmType:'ingreso',nmAmount:'',nmCategory:'salario'}),
@@ -668,11 +656,7 @@ class Component extends DCLogic {
       catChips, navItems,
 
       // balance
-      monthLabel:this.months[s.monthIdx],
-      prevMonth:()=>this.setState({monthIdx:Math.max(0,s.monthIdx-1)}),
-      nextMonth:()=>this.setState({monthIdx:Math.min(this.months.length-1,s.monthIdx+1)}),
-      balNetoText:this.fmtDec(t.neto), balIncomeText:this.fmt(t.ing), balExpensesText:this.fmt(t.gas),
-      balAhorroText:Math.round(t.neto/t.ing*100)+'%',
+      balTotalSpentText:this.fmtDec(t.gas), balVsLastMonthText:'12%',
       balBreakdown, balRecent:s.transactions.slice(2,6).map(x=>this.toRow(x)),
 
       // movimientos
