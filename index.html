@@ -301,7 +301,10 @@
         <sc-if value="{{ showMov }}" hint-placeholder-val="{{ false }}">
           <div data-screen-label="Transactions" class="otscroll" style="position:absolute;inset:0;overflow-y:auto;animation:screenIn .35s ease;padding-top:52px;">
             <div style="padding:60px 22px 118px;">
-              <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:26px;color:#F1F5F9;letter-spacing:-.02em;">Transactions</div>
+              <div style="display:flex;align-items:center;gap:14px;">
+                <button onClick="{{ backHome }}" style="width:44px;height:44px;border-radius:14px;border:1px solid rgba(241,245,249,.1);background:#0C0E12;color:#F1F5F9;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:filter .2s,transform .15s;flex-shrink:0;" style-hover="filter:brightness(1.4)" style-active="transform:scale(.95)"><i class="ph-bold ph-caret-left" style="font-size:20px;"></i></button>
+                <div style="font-family:'Instrument Sans',sans-serif;font-weight:600;font-size:26px;color:#F1F5F9;letter-spacing:-.02em;">Transactions</div>
+              </div>
               <div style="display:flex;align-items:center;gap:12px;height:52px;padding:0 16px;border-radius:16px;background:#0C0E12;border:1px solid rgba(241,245,249,.07);margin-top:16px;animation:cardIn .5s ease .05s backwards;">
                 <i class="ph ph-magnifying-glass" style="font-size:19px;color:#5B6578;"></i>
                 <span style="font-family:'Instrument Sans',sans-serif;font-weight:500;font-size:15px;color:#5B6578;">Search transactions</span>
