@@ -1,0 +1,150 @@
+* {
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+}
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.otscroll {
+  scrollbar-width: none;
+}
+
+@keyframes screenIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes floatGlow {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-7px);
+  }
+}
+@keyframes checkPop {
+  0% {
+    transform: scale(0);
+  }
+  60% {
+    transform: scale(1.14);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@keyframes glowPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+  }
+  50% {
+    opacity: 0.9;
+  }
+}
+@keyframes logoIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.82) translateY(14px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+@keyframes floatSoft {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
+}
+@keyframes glowBreath {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.1);
+  }
+}
+@keyframes shine {
+  0% {
+    transform: rotate(18deg) translateX(-220%);
+  }
+  55%,
+  100% {
+    transform: rotate(18deg) translateX(360%);
+  }
+}
+@keyframes ctaGlow {
+  0%,
+  100% {
+    box-shadow: 0 14px 30px -6px rgba(37, 99, 235, 0.5);
+  }
+  50% {
+    box-shadow: 0 18px 40px -6px rgba(37, 99, 235, 0.9);
+  }
+}
+@keyframes boltPulse {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 8px rgba(120, 200, 255, 0.65));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(150, 220, 255, 1));
+  }
+}
+@keyframes borderGlow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 1px rgba(120, 190, 255, 0.35),
+      0 0 30px rgba(51, 144, 253, 0.4),
+      0 20px 50px -14px rgba(0, 20, 60, 0.8),
+      inset 0 0 30px rgba(51, 144, 253, 0.22),
+      inset 0 2px 10px rgba(150, 200, 255, 0.22);
+  }
+  50% {
+    box-shadow:
+      0 0 0 1px rgba(150, 210, 255, 0.7),
+      0 0 54px rgba(70, 160, 255, 0.75),
+      0 20px 50px -14px rgba(0, 20, 60, 0.8),
+      inset 0 0 40px rgba(51, 144, 253, 0.34),
+      inset 0 2px 12px rgba(170, 210, 255, 0.32);
+  }
+}
+@keyframes cardIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes boltSpin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(720deg);
+  }
+}
