@@ -470,6 +470,17 @@ export default function OneTapApp() {
         <Profile
           userName={currentUser?.name ?? "Guest"}
           userEmail={currentUser?.email ?? ""}
+          avatarUrl={currentUser?.avatarUrl ?? null}
+          canEditProfile={!!currentUser}
+          onAvatarChange={(avatarUrl) =>
+            setCurrentUser((prev) => (prev ? { ...prev, avatarUrl } : prev))
+          }
+          onNameChange={(name) =>
+            setCurrentUser((prev) => (prev ? { ...prev, name } : prev))
+          }
+          onEmailChange={(email) =>
+            setCurrentUser((prev) => (prev ? { ...prev, email } : prev))
+          }
           totalBalanceText={fmtDec(totalBalance)}
           savingsText={fmt(1120)}
           onOpenBalance={() => {

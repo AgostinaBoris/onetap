@@ -29,7 +29,7 @@ export async function getSessionUser() {
 
   const db = getDb();
   const rows = await db
-    .select({ id: users.id, name: users.name, email: users.email })
+    .select({ id: users.id, name: users.name, email: users.email, avatarUrl: users.avatarUrl })
     .from(sessions)
     .innerJoin(users, eq(sessions.userId, users.id))
     .where(and(eq(sessions.token, token), gt(sessions.expiresAt, new Date())))

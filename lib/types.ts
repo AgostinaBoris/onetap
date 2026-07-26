@@ -36,6 +36,7 @@ export interface SessionUser {
   id: number;
   name: string;
   email: string;
+  avatarUrl: string | null;
 }
 
 export interface Transaction {

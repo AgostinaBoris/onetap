@@ -29,6 +29,7 @@ export async function POST(req: Request) {
     id: users.id,
     name: users.name,
     email: users.email,
+    avatarUrl: users.avatarUrl,
   });
 
   await createSession(user.id);
