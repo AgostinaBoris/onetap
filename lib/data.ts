@@ -80,16 +80,4 @@ export const HOME_CHIP_KEYS: CategoryKey[] = [
   "viajes",
 ];
 
-export const INITIAL_TRANSACTIONS: Transaction[] = [
-  { id: 1, name: "Supermarket", type: "gasto", amount: 2100, category: "comida", date: "Today 15:20" },
-  { id: 2, name: "Shell Gas", type: "gasto", amount: 1500, category: "transporte", date: "Today 09:15" },
-  { id: 3, name: "Salary", type: "ingreso", amount: 9000, category: "salario", date: "Yesterday" },
-  { id: 4, name: "Uber", type: "gasto", amount: 850, category: "transporte", date: "24 Mar" },
-  { id: 5, name: "Zara", type: "gasto", amount: 1830, category: "compras", date: "22 Mar" },
-  { id: 6, name: "Cinemark", type: "gasto", amount: 350, category: "ocio", date: "22 Mar" },
-  { id: 7, name: "Netflix", type: "gasto", amount: 490, category: "ocio", date: "20 Mar" },
-  { id: 8, name: "Freelance", type: "ingreso", amount: 2500, category: "freelance", date: "18 Mar" },
-  { id: 9, name: "McDonald's", type: "gasto", amount: 620, category: "comida", date: "18 Mar" },
-  { id: 10, name: "Spotify", type: "gasto", amount: 500, category: "ocio", date: "12 Mar" },
-  { id: 11, name: "Transfer", type: "ingreso", amount: 1000, category: "transferencia", date: "8 Mar" },
-];
+export const INITIAL_TRANSACTIONS: Transaction[] = [];
