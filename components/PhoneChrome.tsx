@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 export function PhoneChrome({ children }: { children: ReactNode }) {
   return (
     <div
+      className="pc-outer"
       style={{
         minHeight: "100vh",
         width: "100%",
@@ -21,7 +22,7 @@ export function PhoneChrome({ children }: { children: ReactNode }) {
         fontFamily: "'Instrument Sans', sans-serif",
       }}
     >
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+      <div className="pc-brand" style={{ display: "flex", alignItems: "center", gap: 12 }}>
         <div
           style={{
             width: 34,
@@ -42,6 +43,7 @@ export function PhoneChrome({ children }: { children: ReactNode }) {
       </div>
 
       <div
+        className="pc-frame"
         style={{
           width: "100%",
           maxWidth: 480,
@@ -55,6 +57,7 @@ export function PhoneChrome({ children }: { children: ReactNode }) {
         }}
       >
         <div
+          className="pc-inner"
           style={{
             position: "relative",
             width: "100%",

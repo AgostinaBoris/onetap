@@ -22,6 +22,31 @@ input::placeholder {
   opacity: 1;
 }
 
+/* On real phones the decorative mock-phone frame should disappear and the
+   app should fill the actual viewport edge-to-edge, PWA-style. */
+@media (max-width: 480px) {
+  .pc-outer {
+    padding: 0 !important;
+    gap: 0 !important;
+    min-height: 100dvh !important;
+  }
+  .pc-brand {
+    display: none !important;
+  }
+  .pc-frame {
+    max-width: 100% !important;
+    aspect-ratio: auto !important;
+    height: 100dvh !important;
+    border-radius: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+  }
+  .pc-inner {
+    border-radius: 0 !important;
+  }
+}
+
 @keyframes screenIn {
   from {
     opacity: 0;
