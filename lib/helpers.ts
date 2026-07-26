@@ -14,6 +14,20 @@ export function fmt(n: number): string {
   return "$" + Math.round(n).toLocaleString("en-US");
 }
 
+export function isSameDay(a: Date, b: Date): boolean {
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+
+export function formatNmDate(d: Date): string {
+  const time = d.toLocaleTimeString("en-US", { hour: "numeric", minute: "2-digit" });
+  const now = new Date();
+  const yesterday = new Date(now);
+  yesterday.setDate(now.getDate() - 1);
+  if (isSameDay(d, now)) return `Today, ${time}`;
+  if (isSameDay(d, yesterday)) return `Yesterday, ${time}`;
+  return d.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) + `, ${time}`;
+}
+
 export function fmtDec(n: number): string {
   return (
     "$" +

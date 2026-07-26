@@ -28,7 +28,7 @@ import {
   MONTHS,
   COLORS,
 } from "@/lib/data";
-import { filterButtonStyle, fmt, fmtDec, iconWrap, rgba, tile, toRow } from "@/lib/helpers";
+import { filterButtonStyle, fmt, fmtDec, formatNmDate, iconWrap, isSameDay, rgba, tile, toRow } from "@/lib/helpers";
 import type { CategoryKey, NavItem, NumpadKey, Screen, Tab, Transaction, TransactionType } from "@/lib/types";
 
 export default function OneTapApp() {
@@ -41,6 +41,10 @@ export default function OneTapApp() {
   const [nmType, setNmType] = useState<TransactionType>("gasto");
   const [nmAmount, setNmAmount] = useState("");
   const [nmCategory, setNmCategory] = useState<CategoryKey | null>(null);
+  const [nmDate, setNmDate] = useState(() => new Date());
+  const [nmCalendarView, setNmCalendarView] = useState(() => new Date());
+  const [nmAmountModalOpen, setNmAmountModalOpen] = useState(false);
+  const [nmDateModalOpen, setNmDateModalOpen] = useState(false);
 
   const [movFilter, setMovFilter] = useState<"todos" | "ingresos" | "gastos">("todos");
   const [monthIdx, setMonthIdx] = useState(2);
@@ -65,12 +69,20 @@ export default function OneTapApp() {
     setNmType("gasto");
     setNmAmount("");
     setNmCategory(null);
+    setNmDate(new Date());
+    setNmCalendarView(new Date());
+    setNmAmountModalOpen(false);
+    setNmDateModalOpen(false);
   };
   const openNuevoIncome = () => {
     setScreen("nuevo");
     setNmType("ingreso");
     setNmAmount("");
     setNmCategory("salario");
+    setNmDate(new Date());
+    setNmCalendarView(new Date());
+    setNmAmountModalOpen(false);
+    setNmDateModalOpen(false);
   };
   const spinBolt = () => {
     setBoltSpin(true);
@@ -88,7 +100,7 @@ export default function OneTapApp() {
       type: nmType,
       amount: amt,
       category: nmCategory,
-      date: "Today",
+      date: formatNmDate(nmDate),
     };
     setTransactions((prev) => [tx, ...prev]);
     setSuccessType(nmType);
@@ -127,6 +139,18 @@ export default function OneTapApp() {
   const nmAmt = nmAmount ? parseInt(nmAmount, 10) : 0;
   const nmCatKeys = isExpense ? EXPENSE_CATEGORY_KEYS : INCOME_CATEGORY_KEYS;
   const nmGridCats = nmCatKeys.map((k, i) => tile(k, CATEGORIES[k], nmCategory === k, () => setNmCategory(k), i));
+  const nmDateText = formatNmDate(nmDate);
+
+  const calYear = nmCalendarView.getFullYear();
+  const calMonth = nmCalendarView.getMonth();
+  const calMonthLabel = nmCalendarView.toLocaleDateString("en-US", { month: "long", year: "numeric" });
+  const calFirstDay = new Date(calYear, calMonth, 1).getDay();
+  const calDaysInMonth = new Date(calYear, calMonth + 1, 0).getDate();
+  const calToday = new Date();
+  const calCells: (Date | null)[] = [
+    ...Array.from({ length: calFirstDay }, () => null),
+    ...Array.from({ length: calDaysInMonth }, (_, i) => new Date(calYear, calMonth, i + 1)),
+  ];
   const nmCanConfirm = nmAmt > 0 && !!nmCategory;
 
   const catExpenses = CATEGORIES_SCREEN_EXPENSE_KEYS.map((k, i) => tile(k, CATEGORIES[k], false, () => {}, i, false));
@@ -177,7 +201,7 @@ export default function OneTapApp() {
     },
   }));
 
-  const showNav = (["home", "balance", "movimientos", "perfil"] as Screen[]).includes(screen);
+  const showNav = (["home", "balance", "movimientos", "perfil", "nuevo"] as Screen[]).includes(screen);
 
   const closeBalanceDetail = () => {
     if (cameFromProfile) {
@@ -286,9 +310,29 @@ export default function OneTapApp() {
       {screen === "nuevo" && (
         <NewMovement
           onBack={() => go("home", "home")}
-          title={isExpense ? "New expense" : "New income"}
+          onOpenMenu={() => go("settings")}
           amountText={fmt(nmAmt)}
           amountColor={nmAmt > 0 ? COLORS.txt : COLORS.mut}
+          amountModalOpen={nmAmountModalOpen}
+          onOpenAmount={() => setNmAmountModalOpen(true)}
+          onCloseAmount={() => setNmAmountModalOpen(false)}
+          dateText={nmDateText}
+          dateModalOpen={nmDateModalOpen}
+          onOpenDate={() => setNmDateModalOpen(true)}
+          onCloseDate={() => setNmDateModalOpen(false)}
+          calendarMonthLabel={calMonthLabel}
+          onPrevMonth={() => setNmCalendarView(new Date(calYear, calMonth - 1, 1))}
+          onNextMonth={() => setNmCalendarView(new Date(calYear, calMonth + 1, 1))}
+          calendarCells={calCells}
+          selectedDate={nmDate}
+          todayDate={calToday}
+          onSelectDate={(d: Date) => {
+            const withTime = new Date(d);
+            withTime.setHours(nmDate.getHours(), nmDate.getMinutes());
+            setNmDate(withTime);
+            setNmDateModalOpen(false);
+          }}
+          isSameDay={isSameDay}
           subtitle="SELECT A CATEGORY"
           gridCats={nmGridCats}
           keys={nmKeys}

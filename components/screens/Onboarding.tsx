@@ -60,7 +60,7 @@ export function Onboarding({
                 position: "absolute",
                 inset: -24,
                 borderRadius: 54,
-                background: "radial-gradient(circle, rgba(51,144,253,.34), transparent 70%)",
+                background: "radial-gradient(circle, rgba(51,144,253,.16), transparent 70%)",
                 filter: "blur(22px)",
                 animation: "glowBreath 4s ease-in-out infinite",
               }}
@@ -70,15 +70,15 @@ export function Onboarding({
               onClick={onSpinBolt}
               style={{
                 position: "relative",
-                width: 140,
-                height: 140,
-                borderRadius: 18,
+                width: 248,
+                height: 248,
+                borderRadius: 30,
                 overflow: "hidden",
                 display: "flex",
                 alignItems: "center",
                 justifyContent: "center",
                 background:
-                  "radial-gradient(125% 120% at 50% 16%, #163a6e 0%, #0c1f3e 46%, #060e1f 100%)",
+                  "radial-gradient(125% 120% at 50% 16%, #0f2a52 0%, #081833 46%, #04091a 100%)",
                 border: "2px solid rgba(90,170,255,.8)",
                 animation: "borderGlow 4s ease-in-out infinite",
                 cursor: "pointer",
@@ -88,33 +88,8 @@ export function Onboarding({
               <div
                 style={{
                   position: "absolute",
-                  top: "-60%",
-                  left: "-10%",
-                  width: "52%",
-                  height: "220%",
-                  background: "linear-gradient(90deg,transparent,rgba(205,232,255,.6),transparent)",
-                  transform: "rotate(18deg)",
-                  animation: "shine 4.6s ease-in-out 1.2s infinite",
-                  pointerEvents: "none",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
                   inset: 0,
-                  background:
-                    "radial-gradient(58% 42% at 50% 44%, rgba(70,150,255,.38), transparent 72%)",
-                  pointerEvents: "none",
-                }}
-              />
-              <div
-                style={{
-                  position: "absolute",
-                  top: 0,
-                  left: 0,
-                  right: 0,
-                  height: "54%",
-                  background: "linear-gradient(180deg, rgba(165,208,255,.26), transparent)",
+                  boxShadow: "inset 0 18px 36px rgba(0,4,14,.65), inset 0 -30px 46px rgba(0,4,14,.8), inset 0 0 40px rgba(0,4,14,.4)",
                   pointerEvents: "none",
                 }}
               />
@@ -127,43 +102,82 @@ export function Onboarding({
                   animation: boltSpinning ? "boltSpin .6s cubic-bezier(.2,.7,.3,1)" : "none",
                 }}
               >
-                <i
-                  className="ph-fill ph-lightning"
+                <div
                   style={{
                     position: "absolute",
-                    fontSize: 84,
-                    color: "#04102a",
-                    transform: "translate(3px,4px)",
-                    opacity: 0.5,
-                    filter: "blur(1px) saturate(1.5) brightness(1.2)",
+                    inset: -6,
+                    borderRadius: "50%",
+                    background: "radial-gradient(circle, rgba(90,170,255,.3), transparent 68%)",
+                    filter: "blur(9px)",
+                    pointerEvents: "none",
                   }}
                 />
-                <i
-                  className="ph-fill ph-lightning"
-                  style={{
-                    position: "absolute",
-                    fontSize: 84,
-                    color: "#f2f9ff",
-                    transform: "translate(-2.5px,-2.5px)",
-                    opacity: 0.92,
-                    filter: "saturate(1.8) brightness(1.3)",
-                  }}
-                />
-                <i
-                  className="ph-fill ph-lightning"
+                <svg
+                  width={172}
+                  height={172}
+                  viewBox="0 0 24 24"
                   style={{
                     position: "relative",
-                    fontSize: 84,
-                    background:
-                      "linear-gradient(150deg,#eef7ff 0%,#a9d2ff 26%,#5c9df6 54%,#2f6ae0 78%,#163a92 100%)",
-                    WebkitBackgroundClip: "text",
-                    backgroundClip: "text",
-                    WebkitTextFillColor: "transparent",
-                    color: "transparent",
                     animation: "boltPulse 3s ease-in-out infinite",
-                    filter: "saturate(1.8) brightness(1.2)",
+                    filter: "drop-shadow(0 6px 10px rgba(3,10,28,.7))",
                   }}
-                />
+                >
+                  <defs>
+                    <linearGradient id="boltGrad" x1="20%" y1="0%" x2="78%" y2="100%">
+                      <stop offset="0%" stopColor="#eaf5ff" />
+                      <stop offset="24%" stopColor="#a4cffc" />
+                      <stop offset="52%" stopColor="#4d9bfb" />
+                      <stop offset="78%" stopColor="#1e5fd0" />
+                      <stop offset="100%" stopColor="#123f9e" />
+                    </linearGradient>
+                    <linearGradient id="boltStroke" x1="10%" y1="0%" x2="90%" y2="100%">
+                      <stop offset="0%" stopColor="#f4f9ff" />
+                      <stop offset="45%" stopColor="#bfe0ff" />
+                      <stop offset="100%" stopColor="#5c9df6" />
+                    </linearGradient>
+                    <filter id="boltBevel" x="-40%" y="-40%" width="180%" height="180%">
+                      <feGaussianBlur in="SourceAlpha" stdDeviation="0.4" result="blur" />
+                      <feSpecularLighting
+                        in="blur"
+                        surfaceScale={2}
+                        specularConstant={0.9}
+                        specularExponent={16}
+                        lightingColor="#eef6ff"
+                        result="spec"
+                      >
+                        <fePointLight x="-25" y="-35" z="45" />
+                      </feSpecularLighting>
+                      <feComposite in="spec" in2="SourceAlpha" operator="in" result="specClip" />
+                      <feComposite
+                        in="SourceGraphic"
+                        in2="specClip"
+                        operator="arithmetic"
+                        k1={0}
+                        k2={1}
+                        k3={1}
+                        k4={0}
+                        result="lit"
+                      />
+                      <feGaussianBlur in="SourceAlpha" stdDeviation="0.5" result="shadowBlur" />
+                      <feOffset in="shadowBlur" dx="1.1" dy="1.4" result="shadowOffset" />
+                      <feComposite in="shadowOffset" in2="SourceAlpha" operator="in" result="innerShadow" />
+                      <feFlood floodColor="#02081c" floodOpacity={0.55} result="shadowColor" />
+                      <feComposite in="shadowColor" in2="innerShadow" operator="in" result="shadowFinal" />
+                      <feMerge>
+                        <feMergeNode in="lit" />
+                        <feMergeNode in="shadowFinal" />
+                      </feMerge>
+                    </filter>
+                  </defs>
+                  <path
+                    d="M13 2L3 14H12L11 22L21 10H12L13 2Z"
+                    fill="url(#boltGrad)"
+                    stroke="url(#boltStroke)"
+                    strokeWidth={0.6}
+                    strokeLinejoin="miter"
+                    filter="url(#boltBevel)"
+                  />
+                </svg>
               </div>
             </Pressable>
           </div>
@@ -178,29 +192,6 @@ export function Onboarding({
             >
               Tap to add an expense
             </div>
-            <svg
-              width="30"
-              height="30"
-              viewBox="0 0 30 30"
-              fill="none"
-              style={{ position: "absolute", right: -26, top: -8, pointerEvents: "none" }}
-            >
-              <path
-                d="M25 27 C30 15, 18 5, 5 3"
-                stroke="#94A3B8"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                fill="none"
-              />
-              <path
-                d="M11 7 L5 3 L12 1"
-                stroke="#94A3B8"
-                strokeWidth="1.8"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                fill="none"
-              />
-            </svg>
           </div>
         </div>
       </div>
