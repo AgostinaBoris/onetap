@@ -19,24 +19,17 @@ export type Tab = "home" | "balance" | "movimientos" | "perfil";
 
 export type TransactionType = "gasto" | "ingreso";
 
-export type CategoryKey =
-  | "comida"
-  | "transporte"
-  | "compras"
-  | "viajes"
-  | "ocio"
-  | "servicios"
-  | "salud"
-  | "educacion"
-  | "otros"
-  | "salario"
-  | "freelance"
-  | "transferencia";
+export type CategoryKey = string;
 
 export interface Category {
   label: string;
   icon: string;
   color: string;
+}
+
+export interface CustomCategory extends Category {
+  key: string;
+  type: TransactionType;
 }
 
 export interface Transaction {

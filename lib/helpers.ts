@@ -1,6 +1,6 @@
 import type { CSSProperties } from "react";
 import { CATEGORIES, COLORS } from "./data";
-import type { Tile, Transaction, TransactionRowData } from "./types";
+import type { Category, Tile, Transaction, TransactionRowData } from "./types";
 
 export function rgba(hex: string, a: number): string {
   const h = hex.replace("#", "");
@@ -54,8 +54,8 @@ export function iconWrap(color: string, size: number): CSSProperties {
   };
 }
 
-export function toRow(t: Transaction, i = 0): TransactionRowData {
-  const c = CATEGORIES[t.category] ?? CATEGORIES.otros;
+export function toRow(t: Transaction, categories: Record<string, Category> = CATEGORIES, i = 0): TransactionRowData {
+  const c = categories[t.category] ?? CATEGORIES.otros;
   const inc = t.type === "ingreso";
   return {
     name: t.name,

@@ -81,3 +81,49 @@ export const HOME_CHIP_KEYS: CategoryKey[] = [
 ];
 
 export const INITIAL_TRANSACTIONS: Transaction[] = [];
+
+export const ICON_CHOICES: string[] = [
+  "fork-knife",
+  "car",
+  "shopping-bag",
+  "airplane-tilt",
+  "popcorn",
+  "wrench",
+  "heartbeat",
+  "graduation-cap",
+  "money",
+  "laptop",
+  "bank",
+  "house",
+  "gift",
+  "coffee",
+  "game-controller",
+  "paw-print",
+  "book-open",
+  "phone",
+  "gas-pump",
+  "tree",
+  "baby",
+  "pill",
+  "wallet",
+  "piggy-bank",
+  "credit-card",
+  "music-notes",
+  "umbrella",
+  "star",
+  "heart",
+  "dots-three-outline",
+];
+
+export const CATEGORY_COLOR_CHOICES: string[] = [
+  "#FF7A9C",
+  "#3390FD",
+  "#C06BFF",
+  "#2FD3C0",
+  "#8A7CFF",
+  "#4CC9F0",
+  "#F87171",
+  "#6C8BFF",
+  "#19E680",
+  "#F5A623",
+];

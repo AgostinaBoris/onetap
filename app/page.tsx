@@ -21,15 +21,17 @@ import {
   CATEGORIES,
   CATEGORIES_SCREEN_EXPENSE_KEYS,
   CATEGORIES_SCREEN_INCOME_KEYS,
+  CATEGORY_COLOR_CHOICES,
   EXPENSE_CATEGORY_KEYS,
   HOME_CHIP_KEYS,
+  ICON_CHOICES,
   INCOME_CATEGORY_KEYS,
   INITIAL_TRANSACTIONS,
   MONTHS,
   COLORS,
 } from "@/lib/data";
 import { filterButtonStyle, fmt, fmtDec, formatNmDate, iconWrap, isSameDay, rgba, tile, toRow } from "@/lib/helpers";
-import type { CategoryKey, NavItem, NumpadKey, Screen, Tab, Transaction, TransactionType } from "@/lib/types";
+import type { Category, CategoryKey, CustomCategory, NavItem, NumpadKey, Screen, Tab, Transaction, TransactionType } from "@/lib/types";
 
 export default function OneTapApp() {
   const [screen, setScreen] = useState<Screen>("onboarding");
@@ -59,6 +61,12 @@ export default function OneTapApp() {
   const [successType, setSuccessType] = useState<TransactionType>("gasto");
   const [successAmount, setSuccessAmount] = useState(0);
   const [successCat, setSuccessCat] = useState<CategoryKey | null>(null);
+
+  const [customCategories, setCustomCategories] = useState<CustomCategory[]>([]);
+  const [catSheetOpen, setCatSheetOpen] = useState(false);
+  const [catSheetType, setCatSheetType] = useState<TransactionType>("gasto");
+  const [catName, setCatName] = useState("");
+  const [catIcon, setCatIcon] = useState<string | null>(null);
 
   const go = (next: Screen, nextTab?: Tab) => {
     setScreen(next);
@@ -112,6 +120,21 @@ export default function OneTapApp() {
     setScreen("success");
   };
 
+  const openNewCategory = () => {
+    setCatSheetType("gasto");
+    setCatName("");
+    setCatIcon(null);
+    setCatSheetOpen(true);
+  };
+  const saveNewCategory = () => {
+    const label = catName.trim();
+    if (!label || !catIcon) return;
+    const key = `custom_${Date.now()}`;
+    const color = CATEGORY_COLOR_CHOICES[customCategories.length % CATEGORY_COLOR_CHOICES.length];
+    setCustomCategories((prev) => [...prev, { key, label, icon: catIcon, color, type: catSheetType }]);
+    setCatSheetOpen(false);
+  };
+
   // ---- derived values (recomputed each render, mirroring renderVals()) ----
   let ing = 0;
   let gas = 0;
@@ -121,6 +144,11 @@ export default function OneTapApp() {
   }
   const neto = ing - gas;
   const totalBalance = BASE_BALANCE + neto;
+
+  const categoryMap: Record<string, Category> = { ...CATEGORIES };
+  for (const c of customCategories) categoryMap[c.key] = c;
+  const customExpenseKeys = customCategories.filter((c) => c.type === "gasto").map((c) => c.key);
+  const customIncomeKeys = customCategories.filter((c) => c.type === "ingreso").map((c) => c.key);
 
   const isExpense = nmType === "gasto";
   const numpadRaw = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "000", "0", "del"];
@@ -140,8 +168,11 @@ export default function OneTapApp() {
     },
   }));
   const nmAmt = nmAmount ? parseInt(nmAmount, 10) : 0;
-  const nmCatKeys = isExpense ? EXPENSE_CATEGORY_KEYS : INCOME_CATEGORY_KEYS;
-  const nmGridCats = nmCatKeys.map((k, i) => tile(k, CATEGORIES[k], nmCategory === k, () => setNmCategory(k), i));
+  const nmCatKeys = [
+    ...(isExpense ? EXPENSE_CATEGORY_KEYS : INCOME_CATEGORY_KEYS),
+    ...(isExpense ? customExpenseKeys : customIncomeKeys),
+  ];
+  const nmGridCats = nmCatKeys.map((k, i) => tile(k, categoryMap[k], nmCategory === k, () => setNmCategory(k), i));
   const nmDateText = formatNmDate(nmDate);
 
   const calYear = nmCalendarView.getFullYear();
@@ -156,13 +187,17 @@ export default function OneTapApp() {
   ];
   const nmCanConfirm = nmAmt > 0 && !!nmCategory && nmDescription.trim().length > 0;
 
-  const catExpenses = CATEGORIES_SCREEN_EXPENSE_KEYS.map((k, i) => tile(k, CATEGORIES[k], false, () => {}, i, false));
-  const catIncome = CATEGORIES_SCREEN_INCOME_KEYS.map((k, i) => tile(k, CATEGORIES[k], false, () => {}, i, false));
+  const catExpenses = [...CATEGORIES_SCREEN_EXPENSE_KEYS, ...customExpenseKeys].map((k, i) =>
+    tile(k, categoryMap[k], false, () => {}, i, false)
+  );
+  const catIncome = [...CATEGORIES_SCREEN_INCOME_KEYS, ...customIncomeKeys].map((k, i) =>
+    tile(k, categoryMap[k], false, () => {}, i, false)
+  );
 
   const filteredTx = transactions.filter((x) =>
     movFilter === "todos" ? true : movFilter === "ingresos" ? x.type === "ingreso" : x.type === "gasto"
   );
-  const movList = [...filteredTx].reverse().map((x, i) => toRow(x, i));
+  const movList = [...filteredTx].reverse().map((x, i) => toRow(x, categoryMap, i));
 
   const navDef: [Tab, string, string][] = [
     ["home", "Home", "house"],
@@ -270,7 +305,7 @@ export default function OneTapApp() {
           catChips={catChips}
           onSeeAllCategories={() => go("categorias")}
           onSeeAllRecent={() => go("movimientos", "movimientos")}
-          recentTx={transactions.slice(0, 5).map((x, i) => toRow(x, i))}
+          recentTx={transactions.slice(0, 5).map((x, i) => toRow(x, categoryMap, i))}
         />
       )}
 
@@ -286,7 +321,7 @@ export default function OneTapApp() {
           balExpensesText={fmt(gas)}
           balSavingsRateText={Math.round((neto / ing) * 100) + "%"}
           onSeeAllRecent={() => go("movimientos", "movimientos")}
-          balRecent={transactions.slice(2, 6).map((x) => toRow(x))}
+          balRecent={transactions.slice(2, 6).map((x) => toRow(x, categoryMap))}
         />
       )}
 
@@ -308,7 +343,25 @@ export default function OneTapApp() {
         />
       )}
 
-      {screen === "categorias" && <Categories onBack={() => go("home", "home")} catExpenses={catExpenses} catIncome={catIncome} />}
+      {screen === "categorias" && (
+        <Categories
+          onBack={() => go("home", "home")}
+          catExpenses={catExpenses}
+          catIncome={catIncome}
+          sheetOpen={catSheetOpen}
+          onOpenSheet={openNewCategory}
+          onCloseSheet={() => setCatSheetOpen(false)}
+          catType={catSheetType}
+          onSetCatType={setCatSheetType}
+          catName={catName}
+          onCatNameChange={setCatName}
+          iconChoices={ICON_CHOICES}
+          catIcon={catIcon}
+          onSelectIcon={setCatIcon}
+          onSave={saveNewCategory}
+          canSave={catName.trim().length > 0 && !!catIcon}
+        />
+      )}
 
       {screen === "nuevo" && (
         <NewMovement
@@ -403,7 +456,7 @@ export default function OneTapApp() {
           amountText={(successType === "ingreso" ? "+" : "−") + fmt(successAmount)}
           color={successType === "ingreso" ? COLORS.green : COLORS.red}
           ringBg={rgba(successType === "ingreso" ? COLORS.green : COLORS.red, 0.16)}
-          catLabel={successCat ? CATEGORIES[successCat].label : ""}
+          catLabel={successCat ? categoryMap[successCat]?.label ?? "" : ""}
           onContinue={() => {
             setScreen("home");
             setTab("home");
