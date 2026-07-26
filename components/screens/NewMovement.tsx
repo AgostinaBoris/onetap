@@ -26,6 +26,9 @@ export function NewMovement({
   isSameDay,
   subtitle,
   gridCats,
+  categorySelected,
+  descriptionValue,
+  onDescriptionChange,
   keys,
   onConfirm,
   confirmStyle,
@@ -52,6 +55,9 @@ export function NewMovement({
   isSameDay: (a: Date, b: Date) => boolean;
   subtitle: string;
   gridCats: Tile[];
+  categorySelected: boolean;
+  descriptionValue: string;
+  onDescriptionChange: (v: string) => void;
   keys: NumpadKey[];
   onConfirm: () => void;
   confirmStyle: CSSProperties;
@@ -183,6 +189,54 @@ export function NewMovement({
             </Pressable>
           ))}
         </div>
+
+        {categorySelected && (
+          <div style={{ marginBottom: 20, animation: "cardIn .35s ease" }}>
+            <div
+              style={{
+                fontFamily: "Instrument Sans, sans-serif",
+                fontWeight: 700,
+                fontSize: 12,
+                letterSpacing: ".09em",
+                color: "#5B6578",
+                margin: "0 2px 10px",
+              }}
+            >
+              DESCRIPTION
+            </div>
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                height: 56,
+                padding: "0 18px",
+                borderRadius: 14,
+                background: "#0C0E12",
+                border: "1px solid rgba(241,245,249,.08)",
+              }}
+            >
+              <i className="ph-duotone ph-note-pencil" style={{ fontSize: 20, color: "#3390FD", flexShrink: 0 }} />
+              <input
+                type="text"
+                value={descriptionValue}
+                onChange={(e) => onDescriptionChange(e.target.value)}
+                placeholder="What's this for?"
+                style={{
+                  flex: 1,
+                  minWidth: 0,
+                  background: "transparent",
+                  border: "none",
+                  outline: "none",
+                  fontFamily: "Instrument Sans, sans-serif",
+                  fontWeight: 600,
+                  fontSize: 16,
+                  color: "#F1F5F9",
+                }}
+              />
+            </div>
+          </div>
+        )}
 
         <Pressable
           onClick={onConfirm}

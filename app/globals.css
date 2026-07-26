@@ -14,6 +14,13 @@ body {
 .otscroll {
   scrollbar-width: none;
 }
+input {
+  color-scheme: dark;
+}
+input::placeholder {
+  color: #5b6578;
+  opacity: 1;
+}
 
 @keyframes screenIn {
   from {

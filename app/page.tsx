@@ -41,6 +41,7 @@ export default function OneTapApp() {
   const [nmType, setNmType] = useState<TransactionType>("gasto");
   const [nmAmount, setNmAmount] = useState("");
   const [nmCategory, setNmCategory] = useState<CategoryKey | null>(null);
+  const [nmDescription, setNmDescription] = useState("");
   const [nmDate, setNmDate] = useState(() => new Date());
   const [nmCalendarView, setNmCalendarView] = useState(() => new Date());
   const [nmAmountModalOpen, setNmAmountModalOpen] = useState(false);
@@ -69,6 +70,7 @@ export default function OneTapApp() {
     setNmType("gasto");
     setNmAmount("");
     setNmCategory(null);
+    setNmDescription("");
     setNmDate(new Date());
     setNmCalendarView(new Date());
     setNmAmountModalOpen(false);
@@ -79,6 +81,7 @@ export default function OneTapApp() {
     setNmType("ingreso");
     setNmAmount("");
     setNmCategory("salario");
+    setNmDescription("");
     setNmDate(new Date());
     setNmCalendarView(new Date());
     setNmAmountModalOpen(false);
@@ -96,7 +99,7 @@ export default function OneTapApp() {
     if (!(amt > 0) || !nmCategory) return;
     const tx: Transaction = {
       id: Date.now(),
-      name: CATEGORIES[nmCategory].label,
+      name: nmDescription.trim(),
       type: nmType,
       amount: amt,
       category: nmCategory,
@@ -151,7 +154,7 @@ export default function OneTapApp() {
     ...Array.from({ length: calFirstDay }, () => null),
     ...Array.from({ length: calDaysInMonth }, (_, i) => new Date(calYear, calMonth, i + 1)),
   ];
-  const nmCanConfirm = nmAmt > 0 && !!nmCategory;
+  const nmCanConfirm = nmAmt > 0 && !!nmCategory && nmDescription.trim().length > 0;
 
   const catExpenses = CATEGORIES_SCREEN_EXPENSE_KEYS.map((k, i) => tile(k, CATEGORIES[k], false, () => {}, i, false));
   const catIncome = CATEGORIES_SCREEN_INCOME_KEYS.map((k, i) => tile(k, CATEGORIES[k], false, () => {}, i, false));
@@ -335,6 +338,9 @@ export default function OneTapApp() {
           isSameDay={isSameDay}
           subtitle="SELECT A CATEGORY"
           gridCats={nmGridCats}
+          categorySelected={!!nmCategory}
+          descriptionValue={nmDescription}
+          onDescriptionChange={setNmDescription}
           keys={nmKeys}
           onConfirm={confirmNm}
           canConfirm={nmCanConfirm}
@@ -403,6 +409,7 @@ export default function OneTapApp() {
             setTab("home");
             setNmAmount("");
             setNmCategory(null);
+            setNmDescription("");
           }}
         />
       )}
