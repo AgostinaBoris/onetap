@@ -120,6 +120,10 @@ export default function OneTapApp() {
     setScreen("success");
   };
 
+  const deleteTransaction = (id: number) => {
+    setTransactions((prev) => prev.filter((t) => t.id !== id));
+  };
+
   const openNewCategory = () => {
     setCatSheetType("gasto");
     setCatName("");
@@ -340,6 +344,7 @@ export default function OneTapApp() {
             style: filterButtonStyle(movFilter === "gastos"),
           }}
           movList={movList}
+          onDeleteTransaction={deleteTransaction}
         />
       )}
 

@@ -8,12 +8,14 @@ export function Transactions({
   filtIncome,
   filtExpenses,
   movList,
+  onDeleteTransaction,
 }: {
   onBack: () => void;
   filtAll: FilterDef;
   filtIncome: FilterDef;
   filtExpenses: FilterDef;
   movList: TransactionRowData[];
+  onDeleteTransaction: (id: number) => void;
 }) {
   return (
     <div
@@ -58,8 +60,8 @@ export function Transactions({
           </button>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 9, marginTop: 18 }}>
-          {movList.map((t, i) => (
-            <TransactionRow key={i} t={t} />
+          {movList.map((t) => (
+            <TransactionRow key={t.id} t={t} onDelete={() => onDeleteTransaction(t.id)} />
           ))}
         </div>
       </div>

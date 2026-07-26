@@ -42,6 +42,7 @@ export interface Transaction {
 }
 
 export interface TransactionRowData {
+  id: number;
   name: string;
   sub: string;
   icon: string;

@@ -1,7 +1,7 @@
 import { Pressable } from "./Pressable";
 import type { TransactionRowData } from "@/lib/types";
 
-export function TransactionRow({ t }: { t: TransactionRowData }) {
+export function TransactionRow({ t, onDelete }: { t: TransactionRowData; onDelete?: () => void }) {
   return (
     <Pressable
       as="div"
@@ -47,6 +47,30 @@ export function TransactionRow({ t }: { t: TransactionRowData }) {
       >
         {t.amountText}
       </div>
+      {onDelete && (
+        <Pressable
+          as="div"
+          onClick={onDelete}
+          style={{
+            width: 26,
+            height: 26,
+            borderRadius: "50%",
+            flexShrink: 0,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            marginLeft: 2,
+            color: "#5B6578",
+            background: "transparent",
+            cursor: "pointer",
+            transition: "background .15s,color .15s",
+          }}
+          hoverStyle={{ background: "rgba(248,113,113,.16)", color: "#F87171" }}
+          activeStyle={{ transform: "scale(.88)" }}
+        >
+          <i className="ph-bold ph-x" style={{ fontSize: 13 }} />
+        </Pressable>
+      )}
     </Pressable>
   );
 }

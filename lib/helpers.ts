@@ -58,6 +58,7 @@ export function toRow(t: Transaction, categories: Record<string, Category> = CAT
   const c = categories[t.category] ?? CATEGORIES.otros;
   const inc = t.type === "ingreso";
   return {
+    id: t.id,
     name: t.name,
     sub: c.label + " · " + t.date,
     icon: c.icon,
