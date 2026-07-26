@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { PhoneChrome } from "@/components/PhoneChrome";
 import { TabBar } from "@/components/TabBar";
 import { SuccessOverlay } from "@/components/SuccessOverlay";
@@ -31,7 +31,18 @@ import {
   COLORS,
 } from "@/lib/data";
 import { filterButtonStyle, fmt, fmtDec, formatNmDate, iconWrap, isSameDay, rgba, tile, toRow } from "@/lib/helpers";
-import type { Category, CategoryKey, CustomCategory, NavItem, NumpadKey, Screen, Tab, Transaction, TransactionType } from "@/lib/types";
+import type {
+  Category,
+  CategoryKey,
+  CustomCategory,
+  NavItem,
+  NumpadKey,
+  Screen,
+  SessionUser,
+  Tab,
+  Transaction,
+  TransactionType,
+} from "@/lib/types";
 
 export default function OneTapApp() {
   const [screen, setScreen] = useState<Screen>("onboarding");
@@ -39,6 +50,20 @@ export default function OneTapApp() {
   const [showMenu, setShowMenu] = useState(false);
   const [boltSpin, setBoltSpin] = useState(false);
   const [cameFromProfile, setCameFromProfile] = useState(false);
+  const [currentUser, setCurrentUser] = useState<SessionUser | null>(null);
+
+  useEffect(() => {
+    fetch("/api/me")
+      .then((res) => (res.ok ? res.json() : null))
+      .then((data) => {
+        if (data?.user) {
+          setCurrentUser(data.user);
+          setScreen("home");
+          setTab("home");
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   const [nmType, setNmType] = useState<TransactionType>("gasto");
   const [nmAmount, setNmAmount] = useState("");
@@ -257,6 +282,8 @@ export default function OneTapApp() {
   };
 
   const logout = () => {
+    fetch("/api/logout", { method: "POST" }).catch(() => {});
+    setCurrentUser(null);
     setScreen("onboarding");
     setTab("home");
     setShowMenu(false);
@@ -274,15 +301,31 @@ export default function OneTapApp() {
         />
       )}
 
-      {screen === "login" && <Login onBack={() => go("onboarding")} onSignIn={() => go("home", "home")} />}
+      {screen === "login" && (
+        <Login
+          onBack={() => go("onboarding")}
+          onSignIn={(user) => {
+            setCurrentUser(user);
+            go("home", "home");
+          }}
+        />
+      )}
 
-      {screen === "signup" && <Signup onBack={() => go("onboarding")} onCreateAccount={() => go("signupSuccess")} />}
+      {screen === "signup" && (
+        <Signup
+          onBack={() => go("onboarding")}
+          onCreateAccount={(user) => {
+            setCurrentUser(user);
+            go("signupSuccess");
+          }}
+        />
+      )}
 
       {screen === "signupSuccess" && <SignupSuccess onContinue={() => go("home", "home")} />}
 
       {screen === "home" && (
         <Home
-          userName="Agostina"
+          userName={currentUser?.name ?? "Guest"}
           showMenu={showMenu}
           onOpenMenu={() => setShowMenu((v) => !v)}
           onCloseMenu={() => setShowMenu(false)}
@@ -425,6 +468,8 @@ export default function OneTapApp() {
 
       {screen === "perfil" && (
         <Profile
+          userName={currentUser?.name ?? "Guest"}
+          userEmail={currentUser?.email ?? ""}
           totalBalanceText={fmtDec(totalBalance)}
           savingsText={fmt(1120)}
           onOpenBalance={() => {

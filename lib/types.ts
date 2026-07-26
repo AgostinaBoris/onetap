@@ -32,6 +32,12 @@ export interface CustomCategory extends Category {
   type: TransactionType;
 }
 
+export interface SessionUser {
+  id: number;
+  name: string;
+  email: string;
+}
+
 export interface Transaction {
   id: number;
   name: string;

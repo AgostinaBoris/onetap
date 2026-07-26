@@ -1,12 +1,16 @@
 import { Pressable } from "../Pressable";
 
 export function Profile({
+  userName,
+  userEmail,
   totalBalanceText,
   savingsText,
   onOpenBalance,
   onOpenSettings,
   onLogout,
 }: {
+  userName: string;
+  userEmail: string;
   totalBalanceText: string;
   savingsText: string;
   onOpenBalance: () => void;
@@ -45,11 +49,13 @@ export function Profile({
             />
           </div>
           <div style={{ fontFamily: "Instrument Sans, sans-serif", fontWeight: 600, fontSize: 24, color: "#F1F5F9", marginTop: 16, letterSpacing: "-.02em" }}>
-            Agostina Aldana
+            {userName}
           </div>
-          <div style={{ fontFamily: "Instrument Sans, sans-serif", fontWeight: 500, fontSize: 14, color: "#94A3B8", marginTop: 3 }}>
-            aldana@onetap.com
-          </div>
+          {userEmail && (
+            <div style={{ fontFamily: "Instrument Sans, sans-serif", fontWeight: 500, fontSize: 14, color: "#94A3B8", marginTop: 3 }}>
+              {userEmail}
+            </div>
+          )}
         </div>
         <div style={{ display: "flex", gap: 12, marginTop: 24 }}>
           <div

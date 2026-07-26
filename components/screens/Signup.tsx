@@ -1,7 +1,45 @@
+import { useState } from "react";
 import { BackButton } from "../BackButton";
 import { CTAButton } from "../CTAButton";
+import type { SessionUser } from "@/lib/types";
 
-export function Signup({ onBack, onCreateAccount }: { onBack: () => void; onCreateAccount: () => void }) {
+export function Signup({
+  onBack,
+  onCreateAccount,
+}: {
+  onBack: () => void;
+  onCreateAccount: (user: SessionUser) => void;
+}) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const submit = async () => {
+    if (loading) return;
+    setError("");
+    setLoading(true);
+    try {
+      const res = await fetch("/api/signup", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name, email, password }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setError(data.error ?? "Something went wrong. Please try again.");
+        return;
+      }
+      onCreateAccount(data.user);
+    } catch {
+      setError("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <div
       style={{
@@ -64,9 +102,23 @@ export function Signup({ onBack, onCreateAccount }: { onBack: () => void; onCrea
             }}
           >
             <i className="ph-duotone ph-user" style={{ fontSize: 20, color: "#3390FD" }} />
-            <div style={{ fontFamily: "Instrument Sans, sans-serif", fontWeight: 600, fontSize: 16, color: "#F1F5F9" }}>
-              Agostina
-            </div>
+            <input
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              style={{
+                flex: 1,
+                minWidth: 0,
+                background: "transparent",
+                border: "none",
+                outline: "none",
+                fontFamily: "Instrument Sans, sans-serif",
+                fontWeight: 600,
+                fontSize: 16,
+                color: "#F1F5F9",
+              }}
+            />
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -94,9 +146,23 @@ export function Signup({ onBack, onCreateAccount }: { onBack: () => void; onCrea
             }}
           >
             <i className="ph-duotone ph-envelope-simple" style={{ fontSize: 20, color: "#3390FD" }} />
-            <div style={{ fontFamily: "Instrument Sans, sans-serif", fontWeight: 600, fontSize: 16, color: "#F1F5F9" }}>
-              aldana@onetap.com
-            </div>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="you@example.com"
+              style={{
+                flex: 1,
+                minWidth: 0,
+                background: "transparent",
+                border: "none",
+                outline: "none",
+                fontFamily: "Instrument Sans, sans-serif",
+                fontWeight: 600,
+                fontSize: 16,
+                color: "#F1F5F9",
+              }}
+            />
           </div>
         </div>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -124,23 +190,38 @@ export function Signup({ onBack, onCreateAccount }: { onBack: () => void; onCrea
             }}
           >
             <i className="ph-duotone ph-lock-simple" style={{ fontSize: 20, color: "#3390FD" }} />
-            <div
+            <input
+              type={showPassword ? "text" : "password"}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="At least 8 characters"
               style={{
+                flex: 1,
+                minWidth: 0,
+                background: "transparent",
+                border: "none",
+                outline: "none",
                 fontFamily: "Instrument Sans, sans-serif",
-                fontWeight: 700,
-                fontSize: 20,
+                fontWeight: 600,
+                fontSize: 16,
                 color: "#F1F5F9",
-                letterSpacing: ".12em",
               }}
-            >
-              ••••••••
-            </div>
-            <i className="ph-duotone ph-eye" style={{ fontSize: 20, color: "#5B6578", marginLeft: "auto" }} />
+            />
+            <i
+              onClick={() => setShowPassword((v) => !v)}
+              className={`ph-duotone ${showPassword ? "ph-eye-slash" : "ph-eye"}`}
+              style={{ fontSize: 20, color: "#5B6578", marginLeft: "auto", cursor: "pointer" }}
+            />
           </div>
         </div>
+        {error && (
+          <div style={{ fontFamily: "Instrument Sans, sans-serif", fontWeight: 600, fontSize: 13, color: "#F87171", paddingLeft: 4 }}>
+            {error}
+          </div>
+        )}
       </div>
       <div style={{ flex: 1 }} />
-      <CTAButton onClick={onCreateAccount}>Create account</CTAButton>
+      <CTAButton onClick={submit}>{loading ? "Creating account…" : "Create account"}</CTAButton>
     </div>
   );
 }
