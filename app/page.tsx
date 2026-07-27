@@ -325,7 +325,9 @@ export default function OneTapApp() {
 
       {screen === "home" && (
         <Home
-          userName={currentUser?.name ?? "Guest"}
+          userName={currentUser?.name ?? "User"}
+          avatarUrl={currentUser?.avatarUrl ?? null}
+          isGuest={!currentUser}
           showMenu={showMenu}
           onOpenMenu={() => setShowMenu((v) => !v)}
           onCloseMenu={() => setShowMenu(false)}
@@ -468,7 +470,7 @@ export default function OneTapApp() {
 
       {screen === "perfil" && (
         <Profile
-          userName={currentUser?.name ?? "Guest"}
+          userName={currentUser?.name ?? "User"}
           userEmail={currentUser?.email ?? ""}
           avatarUrl={currentUser?.avatarUrl ?? null}
           canEditProfile={!!currentUser}

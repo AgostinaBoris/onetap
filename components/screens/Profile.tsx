@@ -231,12 +231,16 @@ export function Profile({
                 transition: "opacity .2s",
               }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src={avatarUrl ?? "/avatar-cropped.png"}
-                alt=""
-                style={{ width: "140%", height: "140%", objectFit: "cover", margin: "0 auto" }}
-              />
+              {!canEditProfile ? (
+                <i className="ph-fill ph-user" style={{ fontSize: 64, color: "rgba(255,255,255,.85)" }} />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarUrl ?? "/avatar-cropped.png"}
+                  alt=""
+                  style={{ width: "140%", height: "140%", objectFit: "cover", margin: "0 auto" }}
+                />
+              )}
             </div>
             {canEditProfile && (
               <Pressable

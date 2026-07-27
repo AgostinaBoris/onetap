@@ -13,6 +13,8 @@ interface HomeChip {
 
 export function Home({
   userName,
+  avatarUrl,
+  isGuest,
   showMenu,
   onOpenMenu,
   onCloseMenu,
@@ -30,6 +32,8 @@ export function Home({
   recentTx,
 }: {
   userName: string;
+  avatarUrl: string | null;
+  isGuest: boolean;
   showMenu: boolean;
   onOpenMenu: () => void;
   onCloseMenu: () => void;
@@ -71,12 +75,16 @@ export function Home({
                 flexShrink: 0,
               }}
             >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/avatar-cropped.png"
-                alt=""
-                style={{ width: "130%", height: "130%", objectFit: "cover", margin: "0 auto" }}
-              />
+              {isGuest ? (
+                <i className="ph-fill ph-user" style={{ fontSize: 40, color: "rgba(255,255,255,.85)" }} />
+              ) : (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={avatarUrl ?? "/avatar-cropped.png"}
+                  alt=""
+                  style={{ width: "130%", height: "130%", objectFit: "cover", margin: "0 auto" }}
+                />
+              )}
             </div>
             <div>
               <div style={{ fontFamily: "Instrument Sans, sans-serif", fontWeight: 500, fontSize: 13, color: "#94A3B8" }}>
